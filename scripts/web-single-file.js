@@ -1,0 +1,20 @@
+// Fabrique une version web en un seul fichier HTML (police incluse).
+const fs = require('fs'), path = require('path');
+const dist = path.join(__dirname, '..', 'dist');
+let html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+const jsDir = path.join(dist, '_expo/static/js/web');
+const js = fs.readdirSync(jsDir).filter(f => f.endsWith('.js'));
+if (js.length !== 1) throw new Error('attendu 1 bundle, trouvé ' + js.length);
+let code = fs.readFileSync(path.join(jsDir, js[0]), 'utf8');
+const fontRel = 'assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/';
+const font = fs.readdirSync(path.join(dist, fontRel)).find(f => f.startsWith('Ionicons'));
+const uri = 'data:font/ttf;base64,' + fs.readFileSync(path.join(dist, fontRel, font)).toString('base64');
+const before = code.length;
+code = code.split('/' + fontRel + font).join(uri);
+if (code.length === before) throw new Error('chemin de police introuvable dans le bundle');
+code = code.replace(/<\/script/gi, '<\\/script');
+html = html.replace(/<script src="[^"]+" defer><\/script>/, () => `<script>${code}</script>`);
+html = html.replace('<html lang="en">', '<html lang="fr">').replace(/<link rel="icon"[^>]*\/>/, '');
+html = html.replace('<title>KLK</title>', '<title>KLK – Rép. Dom.</title>\n<meta name="theme-color" content="#F7F8FA" />');
+fs.writeFileSync(path.join(dist, 'klk.html'), html);
+console.log('ok', (html.length / 1024 / 1024).toFixed(2), 'Mo');
