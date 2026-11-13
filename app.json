@@ -39,6 +39,11 @@
     "splash": {
       "backgroundColor": "#0B2E5C"
     },
-    "owner": "yannsbhs-team"
+    "owner": "yannsbhs-team",
+    "extra": {
+      "eas": {
+        "projectId": "186475c2-807c-4530-b7f1-4178da4bd9c3"
+      }
+    }
   }
 }
