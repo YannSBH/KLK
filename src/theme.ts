@@ -2,7 +2,7 @@ export const colors = {
   navy: '#0B2E5C',
   navySoft: '#16406F',
   red: '#C8102E',
-  bg: '#F7F8FA',
+  bg: '#F3F5F9',
   card: '#FFFFFF',
   border: '#D9DEE5',
   muted: '#4F5B6B',
