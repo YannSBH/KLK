@@ -102,6 +102,7 @@ export const countryFacts: Fact[] = [
   { id: 'larimar', icon: 'water-outline', title: 'Le larimar', text: 'Cette pierre bleue ne se trouve qu’ici, dans la mine de Los Chupaderos près de Barahona. Miguel Méndez l’a baptisée en 1974 : « Lari » pour sa fille Larissa, « mar » pour la mer.' },
   { id: 'ambre', icon: 'bug-outline', title: 'L’ambre dominicain', text: 'Réputé pour ses insectes fossilisés. Une pièce du Musée de l’Ambre de Puerto Plata a servi au film Jurassic Park.' },
   { id: 'medical', icon: 'medkit-outline', title: 'Tourisme médical', text: 'Environ 270 000 personnes sont venues se soigner en 2022 : plus de la moitié pour les dents, environ 40 000 pour la chirurgie esthétique. Les prix sont bien plus bas qu’en Europe ou aux États-Unis. Vérifie que la clinique et le chirurgien sont certifiés, et ne reprends pas l’avion trop vite après une opération.' },
+  { id: 'pharma', icon: 'flask-outline', title: 'Médicaments et matériel médical', text: 'Le matériel médical et les produits pharmaceutiques sont devenus le 1er poste d’exportation du pays : environ 1,9 milliard de dollars de janvier à août 2025, fabriqués surtout dans les zones franches. Le pays compte aussi environ 260 laboratoires pharmaceutiques, qui emploient plus de 17 000 personnes.' },
 ];
 
 export const anecdotes: string[] = [
