@@ -17,6 +17,7 @@ const TILES: { title: string; sub: string; icon: IconName; href: Href; urgent?: 
   { title: 'Phrases', sub: 'Montre au chauffeur', icon: 'chatbubble-ellipses-outline', href: '/phrases' },
   { title: 'Arnaques', sub: 'Les pièges à éviter', icon: 'warning-outline', href: '/arnaques' },
   { title: 'Infos pratiques', sub: 'E-Ticket, prises, eau', icon: 'information-circle-outline', href: '/infos' },
+  { title: 'Traducteur', sub: 'FR · EN · ES latino', icon: 'language-outline', href: '/traducteur' },
   { title: 'Urgences', sub: '911 · police touristique', icon: 'call-outline', href: '/urgences', urgent: true },
 ];
 
@@ -44,6 +45,7 @@ const INDEX: (Result & { text: string })[] = [
   ),
   ...scams.map((t) => ({ title: t.title, sub: 'Arnaques', href: '/arnaques' as Href, text: norm(`${t.title} ${t.text} arnaque`) })),
   ...practical.map((t) => ({ title: t.title, sub: 'Infos pratiques', href: '/infos' as Href, text: norm(`${t.title} ${t.text}`) })),
+  { title: 'Traducteur', sub: 'Français · anglais · espagnol latino', href: '/traducteur', text: norm('traducteur traduire traduction anglais espagnol francais langue') },
   { title: 'Urgences', sub: '911 · POLITUR', href: '/urgences', text: norm('urgence police ambulance politur cestur 911 aide') },
   ...activityGroups.flatMap((g) =>
     g.items.map((a) => ({ title: a.name, sub: `${g.region} · ${a.price}`, href: '/activites' as Href, text: norm(`${a.name} ${g.region} ${a.tip} activite excursion`) })),
