@@ -5,6 +5,7 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Converter } from '../components/Converter';
 import { phraseGroups, practical, routes, scams, transports } from '../data/content';
+import { beaches } from '../data/beaches';
 import { activityGroups, cities, countryFacts } from '../data/discover';
 import { colors, radius } from '../theme';
 
@@ -21,6 +22,7 @@ const TILES: { title: string; sub: string; icon: IconName; href: Href; urgent?: 
 
 const DISCOVER: { title: string; sub: string; icon: IconName; href: Href; color: string }[] = [
   { title: 'Activités', sub: 'Buggy, Saona, baleines… et leurs prix', icon: 'boat-outline', href: '/activites', color: '#E7EEF9' },
+  { title: 'Plages', sub: 'Photos et itinéraire en un clic', icon: 'sunny-outline', href: '/plages', color: '#E3F4F4' },
   { title: 'Bonnes adresses', sub: 'Restos locaux, français et top notés', icon: 'restaurant-outline', href: '/adresses', color: '#FBE9EC' },
   { title: 'Le pays', sub: 'Cacao, café, cigares, or, larimar…', icon: 'earth-outline', href: '/pays', color: '#FFF4E0' },
 ];
@@ -49,6 +51,7 @@ const INDEX: (Result & { text: string })[] = [
   ...cities.flatMap((c) =>
     c.places.map((p) => ({ title: p.name, sub: `${c.name} · ${p.cuisine}`, href: '/adresses' as Href, text: norm(`${p.name} ${c.name} ${p.cuisine} ${p.kind} restaurant resto manger`) })),
   ),
+  ...beaches.map((b) => ({ title: b.name, sub: `Plage · ${b.region}`, href: '/plages' as Href, text: norm(`${b.name} ${b.region} ${b.tags.join(' ')} plage playa`) })),
   ...countryFacts.map((f) => ({ title: f.title, sub: 'Le pays', href: '/pays' as Href, text: norm(`${f.title} ${f.text} pays culture`) })),
 ];
 
