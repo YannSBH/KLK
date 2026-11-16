@@ -3,6 +3,7 @@ import { Image } from 'expo-image';
 import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Screen, styles } from '../components/ui';
 import { beaches, directionsUrl } from '../data/beaches';
+import { imageSource } from '../data/photos';
 import { colors } from '../theme';
 
 export default function Plages() {
@@ -11,7 +12,7 @@ export default function Plages() {
       {beaches.map((b) => (
         <View key={b.id} style={s.card}>
           <Image
-            source={{ uri: b.photo.uri }}
+            source={imageSource(b.photo)}
             style={s.photo}
             contentFit="cover"
             cachePolicy="disk"

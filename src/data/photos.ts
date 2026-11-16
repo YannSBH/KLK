@@ -2,6 +2,12 @@
 
 export type Photo = { uri: string; credit: string; license: string; page: string };
 
+// Wikimedia refuse les images demandées sans User-Agent descriptif (erreur 403).
+// Sur Android, la valeur par défaut (« okhttp ») est bloquée : on s'identifie.
+export const IMAGE_HEADERS = { 'User-Agent': 'KLK/1.4 (https://github.com/YannSBH/KLK) expo-image' };
+
+export const imageSource = (p: { uri: string }) => ({ uri: p.uri, headers: IMAGE_HEADERS });
+
 const T = 'https://thumb.wikimedia.org/wikipedia/commons/thumb';
 const O = 'https://upload.wikimedia.org/wikipedia/commons';
 const C = 'https://commons.wikimedia.org/wiki/File:';

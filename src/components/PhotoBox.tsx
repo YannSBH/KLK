@@ -1,13 +1,13 @@
 import { Image } from 'expo-image';
 import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Photo } from '../data/photos';
+import { imageSource, Photo } from '../data/photos';
 import { colors } from '../theme';
 
 // Photo en haut d'une carte, avec crédit discret par-dessus (lien vers la licence).
 export function PhotoBox({ photo, label, caption }: { photo: Photo; label: string; caption?: string }) {
   return (
     <View style={s.wrap}>
-      <Image source={{ uri: photo.uri }} style={s.img} contentFit="cover" cachePolicy="disk" transition={200} accessibilityLabel={label} />
+      <Image source={imageSource(photo)} style={s.img} contentFit="cover" cachePolicy="disk" transition={200} accessibilityLabel={label} />
       {caption ? (
         <View style={s.caption}>
           <Text style={s.captionText}>{caption}</Text>
