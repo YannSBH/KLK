@@ -2,28 +2,30 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { CURRENCIES, Currency, convert, formatDate, formatMoney, parseAmount, useRates } from '../lib/rates';
+import { useI18n } from '../i18n';
 import { colors, radius } from '../theme';
 
-const LABEL: Record<Currency, string> = { DOP: 'Pesos', USD: 'Dollars', EUR: 'Euros' };
 const QUICK = ['100', '500', '1000', '5000'];
 
 export function Converter() {
   const { rates, status, refresh } = useRates();
+  const { t, lang } = useI18n();
+  const LABEL: Record<Currency, string> = { DOP: t('curDOP'), USD: t('curUSD'), EUR: t('curEUR') };
   const [from, setFrom] = useState<Currency>('DOP');
   const [text, setText] = useState('1000');
   const amount = parseAmount(text);
   const others = CURRENCIES.filter((c) => c !== from);
 
   let info = '';
-  if (status === 'loading' && !rates) info = 'Chargement des taux…';
-  else if (status === 'fallback') info = 'Taux de secours du 12/11/2026';
-  else if (rates) info = `${status === 'offline' ? 'Hors ligne · ' : ''}Taux du ${formatDate(rates.updatedAt)}`;
+  if (status === 'loading' && !rates) info = t('ratesLoading');
+  else if (status === 'fallback') info = t('ratesFallback');
+  else if (rates) info = `${status === 'offline' ? t('offlinePrefix') : ''}${t('ratesOf', { d: formatDate(rates.updatedAt, lang) })}`;
 
   return (
     <View style={s.box}>
       <View style={s.row}>
-        <Text style={s.title}>Convertisseur</Text>
-        <Pressable onPress={() => refresh(true)} accessibilityRole="button" accessibilityLabel="Mettre à jour les taux" hitSlop={10} style={s.refresh}>
+        <Text style={s.title}>{t('converter')}</Text>
+        <Pressable onPress={() => refresh(true)} accessibilityRole="button" accessibilityLabel={t('updateRates')} hitSlop={10} style={s.refresh}>
           <Text style={s.info}>{info}</Text>
           <Ionicons name="refresh" size={14} color={colors.mutedOnNavy} />
         </Pressable>
@@ -47,7 +49,7 @@ export function Converter() {
           value={text}
           onChangeText={setText}
           keyboardType="decimal-pad"
-          accessibilityLabel={`Montant en ${LABEL[from].toLowerCase()}`}
+          accessibilityLabel={t('amountIn', { c: LABEL[from].toLowerCase() })}
           style={s.input}
           selectTextOnFocus
         />

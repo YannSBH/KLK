@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Linking, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Card, Screen, SectionTitle, styles } from '../components/ui';
 import { Entry, googleTranslateUrl, Lang, LANGS, loadHistory, MAX_CHARS, saveHistory, translate } from '../lib/translate';
+import { useI18n } from '../i18n';
 import { colors } from '../theme';
 
 const label = (l: Lang) => LANGS.find((x) => x.code === l)!;
@@ -16,8 +17,9 @@ function speak(text: string, lang: Lang) {
 }
 
 export default function Traducteur() {
-  const [from, setFrom] = useState<Lang>('fr');
-  const [to, setTo] = useState<Lang>('es');
+  const { t, lang } = useI18n();
+  const [from, setFrom] = useState<Lang>(lang === 'es' ? 'en' : lang);
+  const [to, setTo] = useState<Lang>(lang === 'es' ? 'fr' : 'es');
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
   const [busy, setBusy] = useState(false);
@@ -67,11 +69,13 @@ export default function Traducteur() {
       saveHistory(next);
     } catch {
       setResult('');
-      setError('Pas de connexion ou service indisponible. Tu peux réessayer, ou ouvrir Google Traduction.');
+      setError(t('trError'));
     } finally {
       setBusy(false);
     }
   }
+
+  const langName = (c: Lang) => t(c === 'fr' ? 'langFr' : c === 'en' ? 'langEn' : 'langEs');
 
   async function copy() {
     try {
@@ -81,21 +85,21 @@ export default function Traducteur() {
   }
 
   return (
-    <Screen title="Traducteur" subtitle="Français, anglais, espagnol latino">
+    <Screen title={t('tTranslator')} subtitle={t('trSub')}>
       <Card>
-        <LangRow value={from} onPick={pickFrom} title="De" />
-        <Pressable onPress={swap} style={s.swap} accessibilityRole="button" accessibilityLabel="Inverser les langues">
+        <LangRow value={from} onPick={pickFrom} title={t('from')} />
+        <Pressable onPress={swap} style={s.swap} accessibilityRole="button" accessibilityLabel={t('swapLabel')}>
           <Ionicons name="swap-vertical" size={20} color={colors.navy} />
-          <Text style={s.swapText}>Inverser</Text>
+          <Text style={s.swapText}>{t('swap')}</Text>
         </Pressable>
-        <LangRow value={to} onPick={pickTo} title="Vers" />
+        <LangRow value={to} onPick={pickTo} title={t('to')} />
 
         <TextInput
           value={text}
-          onChangeText={(t) => setText(t.slice(0, MAX_CHARS))}
+          onChangeText={(v) => setText(v.slice(0, MAX_CHARS))}
           placeholder={from === 'fr' ? 'Écris ta phrase…' : from === 'en' ? 'Type your sentence…' : 'Escribe tu frase…'}
           placeholderTextColor={colors.muted}
-          accessibilityLabel="Texte à traduire"
+          accessibilityLabel={t('textToTranslate')}
           multiline
           style={s.input}
         />
@@ -112,14 +116,14 @@ export default function Traducteur() {
               }}
               hitSlop={8}
               accessibilityRole="button">
-              <Text style={s.link}>Effacer</Text>
+              <Text style={s.link}>{t('clear')}</Text>
             </Pressable>
           ) : null}
         </View>
 
         <Pressable style={[s.primary, (!text.trim() || busy) && { opacity: 0.5 }]} disabled={!text.trim() || busy} onPress={run} accessibilityRole="button">
           {busy ? <ActivityIndicator color="#fff" /> : <Ionicons name="language" size={18} color="#fff" />}
-          <Text style={s.primaryText}>Traduire</Text>
+          <Text style={s.primaryText}>{t('translate')}</Text>
         </Pressable>
       </Card>
 
@@ -128,24 +132,24 @@ export default function Traducteur() {
           <Text style={styles.p}>{error}</Text>
           <Pressable style={s.secondary} onPress={() => Linking.openURL(googleTranslateUrl(text, from, to))} accessibilityRole="link">
             <Ionicons name="open-outline" size={16} color={colors.navy} />
-            <Text style={s.secondaryText}>Ouvrir Google Traduction</Text>
+            <Text style={s.secondaryText}>{t('openGT')}</Text>
           </Pressable>
         </Card>
       ) : null}
 
       {result ? (
         <Card style={s.resultCard}>
-          <Text style={s.resultLabel}>{label(to).label}</Text>
+          <Text style={s.resultLabel}>{langName(to)}</Text>
           <Text style={s.result} selectable>
             {result}
           </Text>
           <View style={s.actions}>
-            <Action icon="volume-high" text="Écouter" onPress={() => speak(result, to)} />
-            <Action icon={copied ? 'checkmark' : 'copy-outline'} text={copied ? 'Copié' : 'Copier'} onPress={copy} />
+            <Action icon="volume-high" text={t('listen')} onPress={() => speak(result, to)} />
+            <Action icon={copied ? 'checkmark' : 'copy-outline'} text={copied ? t('copied') : t('copy')} onPress={copy} />
             <Action
               icon="expand-outline"
-              text="En grand"
-              onPress={() => router.push({ pathname: '/chauffeur', params: { es: result, fr: text.trim() } })}
+              text={t('big')}
+              onPress={() => router.push({ pathname: '/chauffeur', params: { es: result, m: text.trim() } })}
             />
           </View>
         </Card>
@@ -153,7 +157,7 @@ export default function Traducteur() {
 
       {history.length ? (
         <View style={{ gap: 8 }}>
-          <SectionTitle>Récentes (dispo hors ligne)</SectionTitle>
+          <SectionTitle>{t('recent')}</SectionTitle>
           <View style={s.list}>
             {history.map((h, i) => (
               <Pressable
@@ -179,12 +183,14 @@ export default function Traducteur() {
         </View>
       ) : null}
 
-      <Text style={styles.muted}>Traduction automatique : pour une info importante (santé, argent), fais confirmer par la personne en face.</Text>
+      <Text style={styles.muted}>{t('trDisclaimer')}</Text>
     </Screen>
   );
 }
 
 function LangRow({ value, onPick, title }: { value: Lang; onPick: (l: Lang) => void; title: string }) {
+  const { t } = useI18n();
+  const name = (c: Lang) => t(c === 'fr' ? 'langFr' : c === 'en' ? 'langEn' : 'langEs');
   return (
     <View style={{ gap: 6 }}>
       <Text style={s.rowTitle}>{title}</Text>
@@ -197,7 +203,7 @@ function LangRow({ value, onPick, title }: { value: Lang; onPick: (l: Lang) => v
             accessibilityState={{ selected: l.code === value }}
             style={[s.tab, l.code === value && s.tabOn]}>
             <Text style={[s.tabText, l.code === value && s.tabTextOn]} numberOfLines={1}>
-              {l.code === 'es' ? 'Espagnol' : l.label}
+              {name(l.code)}
             </Text>
           </Pressable>
         ))}

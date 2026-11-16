@@ -4,51 +4,54 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Card, Screen, SectionTitle, styles } from '../components/ui';
 import { phraseGroups } from '../data/content';
+import { useI18n } from '../i18n';
 import { colors } from '../theme';
 
-function show(es: string, fr: string) {
-  router.push({ pathname: '/chauffeur', params: { es, fr } });
+function show(es: string, m: string) {
+  router.push({ pathname: '/chauffeur', params: { es, m } });
 }
 
 export default function Phrases() {
+  const { t, L, lang } = useI18n();
   const [dest, setDest] = useState('');
+  const d = dest.trim();
 
   return (
-    <Screen title="Phrases" subtitle="Touche une phrase pour l’afficher en grand">
+    <Screen title={t('tPhrases')} subtitle={t('phrasesSub')}>
       <Card>
-        <Text style={styles.h}>Montrer au chauffeur</Text>
-        <Text style={styles.muted}>Écris ta destination, on prépare la phrase en espagnol.</Text>
+        <Text style={styles.h}>{t('showDriver')}</Text>
+        <Text style={styles.muted}>{t('showDriverDesc')}</Text>
         <TextInput
           value={dest}
           onChangeText={setDest}
-          placeholder="Ex. Playa Bávaro, hotel Riu…"
+          placeholder={t('destPh')}
           placeholderTextColor={colors.muted}
-          accessibilityLabel="Destination"
+          accessibilityLabel={t('destination')}
           style={s.input}
         />
         <Pressable
-          style={[s.button, !dest.trim() && { opacity: 0.5 }]}
-          disabled={!dest.trim()}
+          style={[s.button, !d && { opacity: 0.5 }]}
+          disabled={!d}
           accessibilityRole="button"
-          onPress={() => show(`Lléveme a ${dest.trim()}, por favor. ¿Cuánto cuesta?`, `Emmenez-moi à ${dest.trim()}. Combien ça coûte ?`)}>
+          onPress={() => show(`Lléveme a ${d}, por favor. ¿Cuánto cuesta?`, lang === 'es' ? '' : t('takeMe', { x: d }))}>
           <Ionicons name="expand-outline" size={16} color="#fff" />
-          <Text style={s.buttonText}>Afficher en grand</Text>
+          <Text style={s.buttonText}>{t('showBig')}</Text>
         </Pressable>
       </Card>
 
       {phraseGroups.map((g) => (
         <View key={g.id} style={{ gap: 8 }}>
-          <SectionTitle>{g.title}</SectionTitle>
+          <SectionTitle>{L(g.title)}</SectionTitle>
           <View style={s.list}>
             {g.phrases.map((p, i) => (
               <Pressable
                 key={p.es}
-                onPress={() => show(p.es, p.fr)}
+                onPress={() => show(p.es, L(p.m))}
                 accessibilityRole="button"
                 style={({ pressed }) => [s.row, i > 0 && s.rowBorder, pressed && { backgroundColor: colors.bg }]}>
                 <View style={{ flex: 1 }}>
                   <Text style={s.es}>{p.es}</Text>
-                  <Text style={styles.muted}>{p.fr}</Text>
+                  {L(p.m) && L(p.m) !== p.es ? <Text style={styles.muted}>{L(p.m)}</Text> : null}
                 </View>
                 <Ionicons name="expand-outline" size={18} color={colors.muted} />
               </Pressable>

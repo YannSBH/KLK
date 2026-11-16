@@ -2,31 +2,33 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Text, View } from 'react-native';
 import { Card, Screen, SectionTitle, styles } from '../components/ui';
 import { anecdotes, countryFacts } from '../data/discover';
+import { useI18n } from '../i18n';
 import { colors } from '../theme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
 export default function Pays() {
+  const { t, L } = useI18n();
   return (
-    <Screen title="Le pays" subtitle="Ce que la Rép. Dom. produit et ce qui la rend unique">
+    <Screen title={t('dCountry')} subtitle={t('countrySub')}>
       {countryFacts.map((f) => (
         <Card key={f.id}>
           <View style={s.row}>
             <View style={s.icon}>
               <Ionicons name={f.icon as IconName} size={22} color={colors.navy} />
             </View>
-            <Text style={[styles.h, { flex: 1 }]}>{f.title}</Text>
+            <Text style={[styles.h, { flex: 1 }]}>{L(f.title)}</Text>
           </View>
-          <Text style={styles.p}>{f.text}</Text>
+          <Text style={styles.p}>{L(f.text)}</Text>
         </Card>
       ))}
 
-      <SectionTitle>Le saviez-vous ?</SectionTitle>
+      <SectionTitle>{t('didYouKnow')}</SectionTitle>
       <View style={s.list}>
         {anecdotes.map((a, i) => (
-          <View key={a} style={[s.item, i > 0 && s.itemBorder]}>
+          <View key={a.fr} style={[s.item, i > 0 && s.itemBorder]}>
             <View style={s.dot} />
-            <Text style={[styles.p, { flex: 1 }]}>{a}</Text>
+            <Text style={[styles.p, { flex: 1 }]}>{L(a)}</Text>
           </View>
         ))}
       </View>

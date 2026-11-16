@@ -1,23 +1,24 @@
+import type { T } from '../i18n';
 // Photos libres de droits (Wikimedia Commons), créditées dans l'app.
 
 export type Photo = { uri: string; credit: string; license: string; page: string };
 
 // Wikimedia refuse les images demandées sans User-Agent descriptif (erreur 403).
 // Sur Android, la valeur par défaut (« okhttp ») est bloquée : on s'identifie.
-export const IMAGE_HEADERS = { 'User-Agent': 'KLK/1.4 (https://github.com/YannSBH/KLK) expo-image' };
+export const IMAGE_HEADERS = { 'User-Agent': 'KLK/1.5 (https://github.com/YannSBH/KLK) expo-image' };
 
 export const imageSource = (p: { uri: string }) => ({ uri: p.uri, headers: IMAGE_HEADERS });
 
-const T = 'https://thumb.wikimedia.org/wikipedia/commons/thumb';
+const TH = 'https://thumb.wikimedia.org/wikipedia/commons/thumb';
 const O = 'https://upload.wikimedia.org/wikipedia/commons';
 const C = 'https://commons.wikimedia.org/wiki/File:';
 
 // path = "a/ab/Nom_encode.jpg" ; file = nom de la page Commons
-const thumb = (path: string, file: string, credit: string, license: string): Photo => {
+export const thumb = (path: string, file: string, credit: string, license: string): Photo => {
   const name = path.split('/').pop()!;
-  return { uri: `${T}/${path}/960px-${name}`, credit, license, page: C + file };
+  return { uri: `${TH}/${path}/960px-${name}`, credit, license, page: C + file };
 };
-const orig = (path: string, file: string, credit: string, license: string): Photo => ({
+export const orig = (path: string, file: string, credit: string, license: string): Photo => ({
   uri: `${O}/${path}`,
   credit,
   license,
@@ -64,17 +65,17 @@ export const activityPhotos: Record<string, Photo> = {
   ),
 };
 
-export type Dish = { label: string; photo: Photo };
+export type Dish = { label: T; photo: Photo };
 
 export const dishes: Record<string, Dish> = {
-  bandera: { label: 'La bandera (riz, haricots, viande)', photo: thumb('2/2a/BanderaDominicana01.jpg', 'BanderaDominicana01.jpg', 'Asalas03', 'CC BY-SA 4.0') },
-  mofongo: { label: 'Mofongo', photo: orig('6/62/Dominican_Mofongo.jpg', 'Dominican_Mofongo.jpg', 'Arturo Feliz-Camilo', 'CC BY 3.0') },
-  picapollo: { label: 'Pica pollo', photo: thumb('1/18/Pica_pollo.jpg', 'Pica_pollo.jpg', 'fugzu', 'CC BY 2.0') },
-  poisson: { label: 'Poisson frit', photo: thumb('7/7d/Pecao_frito.jpg', 'Pecao_frito.jpg', 'Arlene Campusano', 'CC BY-SA 4.0') },
-  grillade: { label: 'Porc rôti', photo: orig('4/42/Cerdo_Asado.jpg', 'Cerdo_Asado.jpg', 'Franchesca TS', 'CC BY-SA 4.0') },
-  confit: { label: 'Cuisine française', photo: thumb('1/1e/Canard_confit.jpg', 'Canard_confit.jpg', 'Marianne Casamance', 'CC BY-SA 4.0') },
+  bandera: { label: { fr: 'La bandera (riz, haricots, viande)', en: 'La bandera (rice, beans, meat)', es: 'La bandera (arroz, habichuelas, carne)' }, photo: thumb('2/2a/BanderaDominicana01.jpg', 'BanderaDominicana01.jpg', 'Asalas03', 'CC BY-SA 4.0') },
+  mofongo: { label: { fr: 'Mofongo', en: 'Mofongo', es: 'Mofongo' }, photo: orig('6/62/Dominican_Mofongo.jpg', 'Dominican_Mofongo.jpg', 'Arturo Feliz-Camilo', 'CC BY 3.0') },
+  picapollo: { label: { fr: 'Pica pollo', en: 'Pica pollo (fried chicken)', es: 'Pica pollo' }, photo: thumb('1/18/Pica_pollo.jpg', 'Pica_pollo.jpg', 'fugzu', 'CC BY 2.0') },
+  poisson: { label: { fr: 'Poisson frit', en: 'Fried fish', es: 'Pescado frito' }, photo: thumb('7/7d/Pecao_frito.jpg', 'Pecao_frito.jpg', 'Arlene Campusano', 'CC BY-SA 4.0') },
+  grillade: { label: { fr: 'Porc rôti', en: 'Roast pork', es: 'Cerdo asado' }, photo: orig('4/42/Cerdo_Asado.jpg', 'Cerdo_Asado.jpg', 'Franchesca TS', 'CC BY-SA 4.0') },
+  confit: { label: { fr: 'Cuisine française', en: 'French cuisine', es: 'Cocina francesa' }, photo: thumb('1/1e/Canard_confit.jpg', 'Canard_confit.jpg', 'Marianne Casamance', 'CC BY-SA 4.0') },
   viennoiserie: {
-    label: 'Pain au chocolat',
+    label: { fr: 'Pain au chocolat', en: 'Chocolate croissant', es: 'Pain au chocolat' },
     photo: thumb(
       'f/f8/Pain_au_chocolat_Mayfield_Farm_Bakery_Sheering_Essex_England.jpg',
       'Pain_au_chocolat_Mayfield_Farm_Bakery_Sheering_Essex_England.jpg',
@@ -82,9 +83,9 @@ export const dishes: Record<string, Dish> = {
       'CC BY-SA 4.0',
     ),
   },
-  pizza: { label: 'Pizza', photo: thumb('a/a0/202405211953_IMG_8165.jpg', '202405211953_IMG_8165.jpg', 'ウィ貴公子', 'CC BY-SA 4.0') },
+  pizza: { label: { fr: 'Pizza', en: 'Pizza', es: 'Pizza' }, photo: thumb('a/a0/202405211953_IMG_8165.jpg', '202405211953_IMG_8165.jpg', 'ウィ貴公子', 'CC BY-SA 4.0') },
   ceviche: {
-    label: 'Ceviche',
+    label: { fr: 'Ceviche', en: 'Ceviche', es: 'Ceviche' },
     photo: thumb(
       'b/b3/Lascar_Delicious_Peruvian_ceviche%21_%284578212666%29.jpg',
       'Lascar_Delicious_Peruvian_ceviche!_(4578212666).jpg',

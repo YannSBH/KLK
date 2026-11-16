@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useI18n } from '../i18n';
 import { colors, radius } from '../theme';
 
 export function goBack() {
@@ -12,10 +13,11 @@ export function goBack() {
 
 export function Screen({ title, subtitle, children }: { title: string; subtitle?: string; children: ReactNode }) {
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
   return (
     <View style={[styles.screen, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <Pressable accessibilityRole="button" accessibilityLabel="Retour" onPress={goBack} style={styles.back} hitSlop={8}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('back')} onPress={goBack} style={styles.back} hitSlop={8}>
           <Ionicons name="chevron-back" size={24} color={colors.navy} />
         </Pressable>
         <View style={{ flex: 1 }}>

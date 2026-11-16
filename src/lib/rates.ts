@@ -85,8 +85,10 @@ export function parseAmount(text: string) {
   return Number.isFinite(n) ? n : 0;
 }
 
-export function formatDate(ts: number) {
+export function formatDate(ts: number, lang: 'fr' | 'en' | 'es' = 'fr') {
   const d = new Date(ts);
   const pad = (n: number) => String(n).padStart(2, '0');
-  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)} à ${pad(d.getHours())}h${pad(d.getMinutes())}`;
+  const time = lang === 'fr' ? `${pad(d.getHours())}h${pad(d.getMinutes())}` : `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const day = lang === 'en' ? `${pad(d.getMonth() + 1)}/${pad(d.getDate())}` : `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+  return `${day} ${lang === 'fr' ? 'à' : lang === 'es' ? 'a las' : 'at'} ${time}`;
 }

@@ -2,7 +2,7 @@
   "expo": {
     "name": "KLK",
     "slug": "klk",
-    "version": "1.4.1",
+    "version": "1.5.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -39,7 +39,8 @@
           "imageWidth": 200
         }
       ],
-      "expo-image"
+      "expo-image",
+      "expo-localization"
     ],
     "scheme": "klk",
     "experiments": {

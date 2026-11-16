@@ -3,16 +3,18 @@ import { useLocalSearchParams } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { goBack } from '../components/ui';
+import { useI18n } from '../i18n';
 import { colors } from '../theme';
 
 export default function Chauffeur() {
-  const { es, fr } = useLocalSearchParams<{ es?: string; fr?: string }>();
+  const { es, m } = useLocalSearchParams<{ es?: string; m?: string }>();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
 
   return (
-    <Pressable style={[s.page, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 24 }]} onPress={goBack} accessibilityLabel="Fermer">
+    <Pressable style={[s.page, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 24 }]} onPress={goBack} accessibilityLabel={t('close')}>
       <View style={s.top}>
-        <Text style={s.hint}>Montre cet écran</Text>
+        <Text style={s.hint}>{t('showScreen')}</Text>
         <View style={s.close}>
           <Ionicons name="close" size={26} color={colors.navy} />
         </View>
@@ -22,7 +24,7 @@ export default function Chauffeur() {
           {es ?? ''}
         </Text>
       </View>
-      {fr ? <Text style={s.fr}>{fr}</Text> : null}
+      {m ? <Text style={s.fr}>{m}</Text> : null}
     </Pressable>
   );
 }

@@ -4,11 +4,13 @@ import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Screen, styles } from '../components/ui';
 import { beaches, directionsUrl } from '../data/beaches';
 import { imageSource } from '../data/photos';
+import { useI18n } from '../i18n';
 import { colors } from '../theme';
 
 export default function Plages() {
+  const { t, L } = useI18n();
   return (
-    <Screen title="Plages" subtitle="Touche « Y aller » pour l’itinéraire dans Maps">
+    <Screen title={t('dBeaches')} subtitle={t('beachesSub')}>
       {beaches.map((b) => (
         <View key={b.id} style={s.card}>
           <Image
@@ -17,32 +19,32 @@ export default function Plages() {
             contentFit="cover"
             cachePolicy="disk"
             transition={200}
-            accessibilityLabel={`Photo de ${b.name}`}
+            accessibilityLabel={t('photoOf', { x: b.name })}
           />
           <View style={s.body}>
             <Text style={styles.h}>{b.name}</Text>
-            <Text style={s.region}>{b.region}</Text>
+            <Text style={s.region}>{L(b.region)}</Text>
             <View style={s.tags}>
-              {b.tags.map((t) => (
-                <View key={t} style={s.tag}>
-                  <Text style={s.tagText}>{t}</Text>
+              {b.tags.map((tag) => (
+                <View key={tag.fr} style={s.tag}>
+                  <Text style={s.tagText}>{L(tag)}</Text>
                 </View>
               ))}
             </View>
-            <Text style={styles.p}>{b.text}</Text>
+            <Text style={styles.p}>{L(b.text)}</Text>
             <Pressable style={s.go} accessibilityRole="link" onPress={() => Linking.openURL(directionsUrl(b))}>
               <Ionicons name="navigate" size={18} color="#fff" />
-              <Text style={s.goText}>Y aller</Text>
+              <Text style={s.goText}>{t('go')}</Text>
             </Pressable>
             <Pressable accessibilityRole="link" onPress={() => Linking.openURL(b.photo.page)} hitSlop={6}>
               <Text style={s.credit}>
-                Photo : {b.photo.credit} · {b.photo.license}
+                © {b.photo.credit} · {b.photo.license}
               </Text>
             </Pressable>
           </View>
         </View>
       ))}
-      <Text style={styles.muted}>Les photos se chargent avec Internet, puis restent visibles hors ligne.</Text>
+      <Text style={styles.muted}>{t('photosNote')}</Text>
     </Screen>
   );
 }

@@ -12,21 +12,24 @@ import { cardStyle, PhotoBox } from "../components/PhotoBox";
 import { Notice, Screen, styles } from "../components/ui";
 import { dishes } from "../data/photos";
 import { cities, Place } from "../data/discover";
+import { useI18n } from "../i18n";
+import type { UiKey } from "../data/ui";
 import { colors } from "../theme";
 
-const KINDS: (Place["kind"] | "Tout")[] = [
-  "Tout",
-  "Local",
-  "Français",
-  "Top noté",
-  "Petit budget",
-];
+const KINDS: (Place["kind"] | "all")[] = ["all", "local", "french", "top", "budget"];
+const KIND_LABEL: Record<(typeof KINDS)[number], UiKey> = {
+  all: "kAll",
+  local: "kLocal",
+  french: "kFrench",
+  top: "kTop",
+  budget: "kBudget",
+};
 
 const KIND_STYLE: Record<Place["kind"], { bg: string; fg: string }> = {
-  Local: { bg: colors.greenBg, fg: colors.greenText },
-  Français: { bg: "#E7EEF9", fg: colors.navy },
-  "Top noté": { bg: colors.amberBg, fg: colors.amberText },
-  "Petit budget": { bg: "#FBE9EC", fg: "#8E0B21" },
+  local: { bg: colors.greenBg, fg: colors.greenText },
+  french: { bg: "#E7EEF9", fg: colors.navy },
+  top: { bg: colors.amberBg, fg: colors.amberText },
+  budget: { bg: "#FBE9EC", fg: "#8E0B21" },
 };
 
 function openMaps(name: string, city: string) {
@@ -35,13 +38,14 @@ function openMaps(name: string, city: string) {
 }
 
 export default function Adresses() {
+  const { t, L } = useI18n();
   const [cityId, setCityId] = useState(cities[0].id);
-  const [kind, setKind] = useState<(typeof KINDS)[number]>("Tout");
+  const [kind, setKind] = useState<(typeof KINDS)[number]>("all");
   const city = cities.find((c) => c.id === cityId)!;
-  const places = city.places.filter((p) => kind === "Tout" || p.kind === kind);
+  const places = city.places.filter((p) => kind === "all" || p.kind === kind);
 
   return (
-    <Screen title="Bonnes adresses" subtitle="Où manger, du local au français">
+    <Screen title={t('dFood')} subtitle={t('foodSub')}>
       <View style={s.tabs}>
         {cities.map((c) => (
           <Pressable
@@ -74,13 +78,13 @@ export default function Adresses() {
             accessibilityState={{ selected: k === kind }}
             style={[s.chip, k === kind && s.chipOn]}
           >
-            <Text style={[s.chipText, k === kind && s.chipTextOn]}>{k}</Text>
+            <Text style={[s.chipText, k === kind && s.chipTextOn]}>{t(KIND_LABEL[k])}</Text>
           </Pressable>
         ))}
       </ScrollView>
 
       {places.length === 0 ? (
-        <Text style={styles.muted}>Pas encore d’adresse de ce type ici.</Text>
+        <Text style={styles.muted}>{t('noPlace')}</Text>
       ) : null}
 
       {places.map((p) => (
@@ -88,8 +92,8 @@ export default function Adresses() {
           {p.dish && dishes[p.dish] ? (
             <PhotoBox
               photo={dishes[p.dish].photo}
-              label={`Plat : ${dishes[p.dish].label}`}
-              caption={`Plat typique : ${dishes[p.dish].label}`}
+              label={t('photoOf', { x: L(dishes[p.dish].label) })}
+              caption={t('typicalDish', { x: L(dishes[p.dish].label) })}
             />
           ) : null}
           <View style={cardStyle.body}>
@@ -99,36 +103,30 @@ export default function Adresses() {
                 style={[s.badge, { backgroundColor: KIND_STYLE[p.kind].bg }]}
               >
                 <Text style={[s.badgeText, { color: KIND_STYLE[p.kind].fg }]}>
-                  {p.kind}
+                  {t(KIND_LABEL[p.kind])}
                 </Text>
               </View>
             </View>
             <Text style={styles.p}>
-              {p.cuisine}
+              {L(p.cuisine)}
               {p.price ? (
                 <Text style={{ fontWeight: "700" }}> · {p.price}</Text>
               ) : null}
             </Text>
-            <Text style={styles.muted}>{p.tip}</Text>
+            <Text style={styles.muted}>{L(p.tip)}</Text>
             <Pressable
               style={s.maps}
               accessibilityRole="link"
               onPress={() => openMaps(p.name, city.name)}
             >
               <Ionicons name="map-outline" size={16} color={colors.navy} />
-              <Text style={s.mapsText}>
-                Voir le resto et ses photos sur Google Maps
-              </Text>
+              <Text style={s.mapsText}>{t('mapsPlace')}</Text>
             </Pressable>
           </View>
         </View>
       ))}
 
-      <Notice>
-        Les photos montrent un plat typique de la cuisine proposée, pas le resto
-        lui-même. Pour voir le lieu, les horaires et les avis récents, ouvre
-        Google Maps.
-      </Notice>
+      <Notice>{t('foodNotice')}</Notice>
     </Screen>
   );
 }

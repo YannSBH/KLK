@@ -7,65 +7,81 @@ import { Converter } from '../components/Converter';
 import { phraseGroups, practical, routes, scams, transports } from '../data/content';
 import { beaches } from '../data/beaches';
 import { activityGroups, cities, countryFacts } from '../data/discover';
+import { priceItems } from '../data/extras';
+import type { UiKey } from '../data/ui';
+import { Lang, LANG_NAMES, LANGS, T, useI18n } from '../i18n';
 import { colors, radius } from '../theme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
-const TILES: { title: string; sub: string; icon: IconName; href: Href; urgent?: boolean }[] = [
-  { title: 'Prix des taxis', sub: 'Ne te fais pas avoir', icon: 'car-outline', href: '/taxis' },
-  { title: 'Transports', sub: 'Uber, concho, guagua…', icon: 'bus-outline', href: '/transports' },
-  { title: 'Phrases', sub: 'Montre au chauffeur', icon: 'chatbubble-ellipses-outline', href: '/phrases' },
-  { title: 'Arnaques', sub: 'Les pièges à éviter', icon: 'warning-outline', href: '/arnaques' },
-  { title: 'Infos pratiques', sub: 'E-Ticket, prises, eau', icon: 'information-circle-outline', href: '/infos' },
-  { title: 'Traducteur', sub: 'FR · EN · ES latino', icon: 'language-outline', href: '/traducteur' },
-  { title: 'Urgences', sub: '911 · police touristique', icon: 'call-outline', href: '/urgences', urgent: true },
+const TILES: { title: UiKey; sub: UiKey; icon: IconName; href: Href; urgent?: boolean }[] = [
+  { title: 'tTaxis', sub: 'tTaxisSub', icon: 'car-outline', href: '/taxis' },
+  { title: 'tTransports', sub: 'tTransportsSub', icon: 'bus-outline', href: '/transports' },
+  { title: 'tPhrases', sub: 'tPhrasesSub', icon: 'chatbubble-ellipses-outline', href: '/phrases' },
+  { title: 'tScams', sub: 'tScamsSub', icon: 'warning-outline', href: '/arnaques' },
+  { title: 'tInfo', sub: 'tInfoSub', icon: 'information-circle-outline', href: '/infos' },
+  { title: 'tTranslator', sub: 'tTranslatorSub', icon: 'language-outline', href: '/traducteur' },
+  { title: 'tEmergency', sub: 'tEmergencySub', icon: 'call-outline', href: '/urgences', urgent: true },
 ];
 
-const DISCOVER: { title: string; sub: string; icon: IconName; href: Href; color: string }[] = [
-  { title: 'Activités', sub: 'Buggy, Saona, baleines… et leurs prix', icon: 'boat-outline', href: '/activites', color: '#E7EEF9' },
-  { title: 'Plages', sub: 'Photos et itinéraire en un clic', icon: 'sunny-outline', href: '/plages', color: '#E3F4F4' },
-  { title: 'Bonnes adresses', sub: 'Restos locaux, français et top notés', icon: 'restaurant-outline', href: '/adresses', color: '#FBE9EC' },
-  { title: 'Le pays', sub: 'Cacao, café, cigares, or, larimar…', icon: 'earth-outline', href: '/pays', color: '#FFF4E0' },
+const DISCOVER: { title: UiKey; sub: UiKey; icon: IconName; href: Href; color: string }[] = [
+  { title: 'dActivities', sub: 'dActivitiesSub', icon: 'boat-outline', href: '/activites', color: '#E7EEF9' },
+  { title: 'dBeaches', sub: 'dBeachesSub', icon: 'sunny-outline', href: '/plages', color: '#E3F4F4' },
+  { title: 'dPrices', sub: 'dPricesSub', icon: 'pricetags-outline', href: '/prix', color: '#EAF6EC' },
+  { title: 'dFood', sub: 'dFoodSub', icon: 'restaurant-outline', href: '/adresses', color: '#FBE9EC' },
+  { title: 'dEsim', sub: 'dEsimSub', icon: 'cellular-outline', href: '/esim', color: '#EFEAFB' },
+  { title: 'dMap', sub: 'dMapSub', icon: 'map-outline', href: '/carte', color: '#E3F4F4' },
+  { title: 'dCountry', sub: 'dCountrySub', icon: 'earth-outline', href: '/pays', color: '#FFF4E0' },
 ];
 
-type Result = { title: string; sub: string; href: Href };
+type Result = { title: string; sub: string; href: Href; text: string };
 
 const norm = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const all = (v: T | string) => (typeof v === 'string' ? v : `${v.fr} ${v.en} ${v.es}`);
 
-const INDEX: (Result & { text: string })[] = [
-  ...routes.map((r) => ({
-    title: `${r.from} → ${r.to}`,
-    sub: `Taxi / transfert : ${r.transfer}`,
-    href: '/taxis' as Href,
-    text: norm([r.from, r.to, ...r.keywords, 'taxi transfert'].join(' ')),
-  })),
-  ...transports.map((t) => ({ title: t.name, sub: t.price, href: '/transports' as Href, text: norm(`${t.name} ${t.tip} transport`) })),
-  ...phraseGroups.flatMap((g) =>
-    g.phrases.map((p) => ({ title: p.es, sub: p.fr, href: '/phrases' as Href, text: norm(`${p.es} ${p.fr} phrase ${g.title}`) })),
-  ),
-  ...scams.map((t) => ({ title: t.title, sub: 'Arnaques', href: '/arnaques' as Href, text: norm(`${t.title} ${t.text} arnaque`) })),
-  ...practical.map((t) => ({ title: t.title, sub: 'Infos pratiques', href: '/infos' as Href, text: norm(`${t.title} ${t.text}`) })),
-  { title: 'Traducteur', sub: 'Français · anglais · espagnol latino', href: '/traducteur', text: norm('traducteur traduire traduction anglais espagnol francais langue') },
-  { title: 'Urgences', sub: '911 · POLITUR', href: '/urgences', text: norm('urgence police ambulance politur cestur 911 aide') },
-  ...activityGroups.flatMap((g) =>
-    g.items.map((a) => ({ title: a.name, sub: `${g.region} · ${a.price}`, href: '/activites' as Href, text: norm(`${a.name} ${g.region} ${a.tip} activite excursion`) })),
-  ),
-  ...cities.flatMap((c) =>
-    c.places.map((p) => ({ title: p.name, sub: `${c.name} · ${p.cuisine}`, href: '/adresses' as Href, text: norm(`${p.name} ${c.name} ${p.cuisine} ${p.kind} restaurant resto manger`) })),
-  ),
-  ...beaches.map((b) => ({ title: b.name, sub: `Plage · ${b.region}`, href: '/plages' as Href, text: norm(`${b.name} ${b.region} ${b.tags.join(' ')} plage playa`) })),
-  ...countryFacts.map((f) => ({ title: f.title, sub: 'Le pays', href: '/pays' as Href, text: norm(`${f.title} ${f.text} pays culture`) })),
-];
+// Index de recherche : affiché dans la langue choisie, mais on cherche dans les trois langues.
+function buildIndex(lang: Lang, t: (k: UiKey) => string): Result[] {
+  const L = (v: T | string) => (typeof v === 'string' ? v : v[lang]);
+  return [
+    ...routes.map((r) => ({
+      title: `${r.from} → ${r.to}`,
+      sub: `${t('tTaxis')} · ${L(r.transfer)}`,
+      href: '/taxis' as Href,
+      text: norm([r.from, r.to, ...r.keywords, 'taxi transfert transfer traslado'].join(' ')),
+    })),
+    ...transports.map((x) => ({ title: L(x.name), sub: L(x.price), href: '/transports' as Href, text: norm(`${all(x.name)} ${all(x.tip)} transport`) })),
+    ...phraseGroups.flatMap((g) =>
+      g.phrases.map((p) => ({ title: p.es, sub: L(p.m), href: '/phrases' as Href, text: norm(`${p.es} ${all(p.m)} phrase frase ${all(g.title)}`) })),
+    ),
+    ...scams.map((x) => ({ title: L(x.title), sub: t('tScams'), href: '/arnaques' as Href, text: norm(`${all(x.title)} ${all(x.text)} arnaque scam estafa`) })),
+    ...practical.map((x) => ({ title: L(x.title), sub: t('tInfo'), href: '/infos' as Href, text: norm(`${all(x.title)} ${all(x.text)}`) })),
+    { title: t('tTranslator'), sub: t('trSub'), href: '/traducteur', text: norm('traducteur traduire traduction translate translator traductor anglais espagnol francais english spanish idioma langue') },
+    { title: t('tEmergency'), sub: '911 · POLITUR', href: '/urgences', text: norm('urgence emergency emergencia police policia ambulance ambulancia politur 911 aide help ayuda') },
+    ...activityGroups.flatMap((g) =>
+      g.items.map((a) => ({ title: L(a.name), sub: `${g.region} · ${L(a.price)}`, href: '/activites' as Href, text: norm(`${all(a.name)} ${g.region} ${all(a.tip)} activite activity actividad excursion`) })),
+    ),
+    ...cities.flatMap((c) =>
+      c.places.map((p) => ({ title: p.name, sub: `${c.name} · ${L(p.cuisine)}`, href: '/adresses' as Href, text: norm(`${p.name} ${c.name} ${all(p.cuisine)} ${p.kind} restaurant resto restaurante manger eat comer`) })),
+    ),
+    ...beaches.map((b) => ({ title: b.name, sub: `${t('dBeaches')} · ${L(b.region)}`, href: '/plages' as Href, text: norm(`${b.name} ${all(b.region)} ${b.tags.map(all).join(' ')} plage playa beach`) })),
+    ...priceItems.map((x) => ({ title: L(x.name), sub: L(x.local), href: '/prix' as Href, text: norm(`${all(x.name)} prix price precio combien cuanto cuesta`) })),
+    { title: t('dEsim'), sub: t('dEsimSub'), href: '/esim', text: norm('esim e-sim sim internet data donnees datos claro altice airalo holafly nomad saily wifi telephone phone') },
+    { title: t('dMap'), sub: t('dMapSub'), href: '/carte', text: norm('carte map mapa aeroport airport aeropuerto distributeur atm cajero pharmacie pharmacy farmacia essence gas gasolinera') },
+    ...countryFacts.map((f) => ({ title: L(f.title), sub: t('dCountry'), href: '/pays' as Href, text: norm(`${all(f.title)} ${all(f.text)} pays country pais culture`) })),
+  ];
+}
 
 export default function Home() {
   const insets = useSafeAreaInsets();
+  const { t, lang, setLang } = useI18n();
   const [q, setQ] = useState('');
 
+  const index = useMemo(() => buildIndex(lang, t), [lang, t]);
   const results = useMemo(() => {
     const words = norm(q).split(/\s+/).filter((w) => w.length > 1);
     if (!words.length) return [];
-    return INDEX.filter((item) => words.every((w) => item.text.includes(w))).slice(0, 8);
-  }, [q]);
+    return index.filter((item) => words.every((w) => item.text.includes(w))).slice(0, 8);
+  }, [q, index]);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colors.bg }} contentContainerStyle={{ paddingBottom: insets.bottom + 32 }} keyboardShouldPersistTaps="handled">
@@ -74,14 +90,24 @@ export default function Home() {
           <View style={s.top}>
             <View style={s.brand}>
               <Image source={require('../../assets/icon.png')} style={s.logoImg} accessibilityIgnoresInvertColors />
-              <View>
+              <View style={{ flexShrink: 1 }}>
                 <Text style={s.logo}>KLK</Text>
-                <Text style={s.tagline}>Ton guide anti-galère en Rép. Dom.</Text>
+                <Text style={s.tagline}>{t('tagline')}</Text>
               </View>
             </View>
-            <View style={s.badge}>
-              <Ionicons name="cloud-offline-outline" size={14} color="#fff" />
-              <Text style={s.badgeText}>Hors ligne</Text>
+            <View style={s.langs} accessibilityRole="radiogroup" accessibilityLabel={t('language')}>
+              {LANGS.map((l) => (
+                <Pressable
+                  key={l}
+                  onPress={() => setLang(l)}
+                  accessibilityRole="radio"
+                  accessibilityLabel={LANG_NAMES[l]}
+                  accessibilityState={{ checked: l === lang }}
+                  hitSlop={4}
+                  style={[s.lang, l === lang && s.langOn]}>
+                  <Text style={[s.langText, l === lang && s.langTextOn]}>{l.toUpperCase()}</Text>
+                </Pressable>
+              ))}
             </View>
           </View>
 
@@ -90,14 +116,14 @@ export default function Home() {
             <TextInput
               value={q}
               onChangeText={setQ}
-              placeholder="Où vas-tu ? Ex. Las Terrenas"
+              placeholder={t('searchPh')}
               placeholderTextColor={colors.muted}
-              accessibilityLabel="Rechercher"
+              accessibilityLabel={t('search')}
               style={s.searchInput}
               returnKeyType="search"
             />
             {q ? (
-              <Pressable onPress={() => setQ('')} accessibilityRole="button" accessibilityLabel="Effacer" hitSlop={10}>
+              <Pressable onPress={() => setQ('')} accessibilityRole="button" accessibilityLabel={t('clear')} hitSlop={10}>
                 <Ionicons name="close-circle" size={20} color={colors.muted} />
               </Pressable>
             ) : null}
@@ -115,7 +141,7 @@ export default function Home() {
                   </Pressable>
                 ))
               ) : (
-                <Text style={[s.resultSub, { padding: 14 }]}>Rien trouvé pour « {q.trim()} ».</Text>
+                <Text style={[s.resultSub, { padding: 14 }]}>{t('noResult', { q: q.trim() })}</Text>
               )}
             </View>
           ) : null}
@@ -130,24 +156,24 @@ export default function Home() {
       </View>
 
       <View style={[s.inner, s.body]}>
-        <Text style={s.section}>L’essentiel</Text>
+        <Text style={s.section}>{t('essentials')}</Text>
         <View style={s.grid}>
-          {TILES.map((t) => (
+          {TILES.map((x) => (
             <Pressable
-              key={t.title}
-              onPress={() => router.push(t.href)}
+              key={x.title}
+              onPress={() => router.push(x.href)}
               accessibilityRole="button"
-              style={({ pressed }) => [s.tile, t.urgent && s.tileUrgent, pressed && { opacity: 0.8 }]}>
-              <Ionicons name={t.icon} size={26} color={t.urgent ? '#fff' : colors.navy} />
+              style={({ pressed }) => [s.tile, x.urgent && s.tileUrgent, pressed && { opacity: 0.8 }]}>
+              <Ionicons name={x.icon} size={26} color={x.urgent ? '#fff' : colors.navy} />
               <View>
-                <Text style={[s.tileTitle, t.urgent && { color: '#fff' }]}>{t.title}</Text>
-                <Text style={[s.tileSub, t.urgent && { color: '#fff' }]}>{t.sub}</Text>
+                <Text style={[s.tileTitle, x.urgent && { color: '#fff' }]}>{t(x.title)}</Text>
+                <Text style={[s.tileSub, x.urgent && { color: '#fff' }]}>{t(x.sub)}</Text>
               </View>
             </Pressable>
           ))}
         </View>
 
-        <Text style={s.section}>Découvrir</Text>
+        <Text style={s.section}>{t('discover')}</Text>
         <View style={{ gap: 12 }}>
           {DISCOVER.map((d) => (
             <Pressable
@@ -159,8 +185,8 @@ export default function Home() {
                 <Ionicons name={d.icon} size={26} color={colors.navy} />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={s.tileTitle}>{d.title}</Text>
-                <Text style={s.tileSub}>{d.sub}</Text>
+                <Text style={s.tileTitle}>{t(d.title)}</Text>
+                <Text style={s.tileSub}>{t(d.sub)}</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color={colors.muted} />
             </Pressable>
@@ -180,6 +206,11 @@ const s = StyleSheet.create({
   logoImg: { width: 48, height: 48, borderRadius: 14 },
   logo: { fontSize: 30, fontWeight: '900', color: '#fff', letterSpacing: -0.5, lineHeight: 34 },
   tagline: { fontSize: 13, color: colors.mutedOnNavy },
+  langs: { flexDirection: 'row', backgroundColor: 'rgba(255,255,255,0.12)', borderRadius: 999, padding: 3, gap: 2 },
+  lang: { minWidth: 36, minHeight: 32, borderRadius: 999, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
+  langOn: { backgroundColor: '#fff' },
+  langText: { color: '#fff', fontWeight: '800', fontSize: 12 },
+  langTextOn: { color: colors.navy },
   badge: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999 },
   badgeText: { color: '#fff', fontSize: 12, fontWeight: '600' },
   search: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: colors.card, borderRadius: 14, height: 52, paddingHorizontal: 14 },

@@ -3,22 +3,24 @@ import { router } from 'expo-router';
 import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Screen, styles } from '../components/ui';
 import { emergencyNumbers } from '../data/content';
+import { useI18n } from '../i18n';
 import { colors } from '../theme';
 
 export default function Urgences() {
+  const { t, L } = useI18n();
   return (
-    <Screen title="Urgences" subtitle="Touche un numéro pour appeler">
+    <Screen title={t('tEmergency')} subtitle={t('emergencySub')}>
       {emergencyNumbers.map((n) => (
         <Pressable
           key={n.number}
           accessibilityRole="button"
-          accessibilityLabel={`Appeler ${n.label}, ${n.number}`}
+          accessibilityLabel={`${t('callX', { x: L(n.label) })}, ${n.number}`}
           onPress={() => Linking.openURL(`tel:${n.number.replace(/-/g, '')}`)}
           style={({ pressed }) => [s.call, n.main && s.main, pressed && { opacity: 0.85 }]}>
           <Ionicons name="call" size={24} color={n.main ? '#fff' : colors.navy} />
           <View style={{ flex: 1 }}>
             <Text style={[s.number, n.main && { color: '#fff' }]}>{n.number}</Text>
-            <Text style={[styles.muted, n.main && { color: '#fff' }]}>{n.label}</Text>
+            <Text style={[styles.muted, n.main && { color: '#fff' }]}>{L(n.label)}</Text>
           </View>
         </Pressable>
       ))}
@@ -26,11 +28,11 @@ export default function Urgences() {
       <Pressable
         style={s.phrase}
         accessibilityRole="button"
-        onPress={() => router.push({ pathname: '/chauffeur', params: { es: '¡Ayuda! Llame a la policía, por favor.', fr: 'À l’aide ! Appelez la police.' } })}>
-        <Text style={styles.h}>Afficher « Appelez la police » en espagnol</Text>
+        onPress={() => router.push({ pathname: '/chauffeur', params: { es: '¡Ayuda! Llame a la policía, por favor.', m: t('policeFr') } })}>
+        <Text style={styles.h}>{t('showPolice')}</Text>
       </Pressable>
 
-      <Text style={styles.muted}>Pense aussi à noter le numéro de ton ambassade et de ton hôtel avant de partir.</Text>
+      <Text style={styles.muted}>{t('emergencyNote')}</Text>
     </Screen>
   );
 }

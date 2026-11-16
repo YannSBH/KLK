@@ -1,0 +1,210 @@
+// Textes d'interface en français, anglais et espagnol.
+
+const ui0 = {
+  // Accueil
+  tagline: { fr: 'Ton guide anti-galère en Rép. Dom.', en: 'Your hassle-free guide to the D.R.', es: 'Tu guía sin líos en R. D.' },
+  offline: { fr: 'Hors ligne', en: 'Offline', es: 'Sin conexión' },
+  searchPh: { fr: 'Où vas-tu ? Ex. Las Terrenas', en: 'Where to? E.g. Las Terrenas', es: '¿A dónde vas? Ej. Las Terrenas' },
+  search: { fr: 'Rechercher', en: 'Search', es: 'Buscar' },
+  clear: { fr: 'Effacer', en: 'Clear', es: 'Borrar' },
+  noResult: { fr: 'Rien trouvé pour « {q} ».', en: 'Nothing found for “{q}”.', es: 'Nada encontrado para «{q}».' },
+  essentials: { fr: 'L’essentiel', en: 'Essentials', es: 'Lo esencial' },
+  discover: { fr: 'Découvrir', en: 'Discover', es: 'Descubrir' },
+  language: { fr: 'Langue', en: 'Language', es: 'Idioma' },
+  back: { fr: 'Retour', en: 'Back', es: 'Volver' },
+
+  // Tuiles
+  tTaxis: { fr: 'Prix des taxis', en: 'Taxi prices', es: 'Precios de taxi' },
+  tTaxisSub: { fr: 'Ne te fais pas avoir', en: 'Don’t get ripped off', es: 'Que no te engañen' },
+  tTransports: { fr: 'Transports', en: 'Getting around', es: 'Transporte' },
+  tTransportsSub: { fr: 'Uber, concho, guagua…', en: 'Uber, concho, guagua…', es: 'Uber, concho, guagua…' },
+  tPhrases: { fr: 'Phrases', en: 'Phrases', es: 'Frases' },
+  tPhrasesSub: { fr: 'Montre au chauffeur', en: 'Show the driver', es: 'Muéstrale al chofer' },
+  tScams: { fr: 'Arnaques', en: 'Scams', es: 'Estafas' },
+  tScamsSub: { fr: 'Les pièges à éviter', en: 'Traps to avoid', es: 'Trampas a evitar' },
+  tInfo: { fr: 'Infos pratiques', en: 'Practical info', es: 'Info práctica' },
+  tInfoSub: { fr: 'E-Ticket, prises, eau', en: 'E-Ticket, plugs, water', es: 'E-Ticket, enchufes, agua' },
+  tTranslator: { fr: 'Traducteur', en: 'Translator', es: 'Traductor' },
+  tTranslatorSub: { fr: 'FR · EN · ES latino', en: 'EN · FR · Latin Spanish', es: 'ES · EN · FR' },
+  tEmergency: { fr: 'Urgences', en: 'Emergency', es: 'Emergencias' },
+  tEmergencySub: { fr: '911 · police touristique', en: '911 · tourist police', es: '911 · policía turística' },
+
+  dActivities: { fr: 'Activités', en: 'Activities', es: 'Actividades' },
+  dActivitiesSub: { fr: 'Buggy, Saona, baleines… et leurs prix', en: 'Buggies, Saona, whales… and prices', es: 'Buggy, Saona, ballenas… y precios' },
+  dBeaches: { fr: 'Plages', en: 'Beaches', es: 'Playas' },
+  dBeachesSub: { fr: 'Photos et itinéraire en un clic', en: 'Photos and one-tap directions', es: 'Fotos y ruta en un toque' },
+  dPrices: { fr: 'Combien ça coûte ?', en: 'How much is it?', es: '¿Cuánto cuesta?' },
+  dPricesSub: { fr: 'Bière, repas, essence… les vrais prix', en: 'Beer, meals, gas… real prices', es: 'Cerveza, comida, gasolina… precios reales' },
+  dFood: { fr: 'Bonnes adresses', en: 'Where to eat', es: 'Dónde comer' },
+  dFoodSub: { fr: 'Restos locaux, français et top notés', en: 'Local, French and top-rated spots', es: 'Comida local, francesa y mejor valorada' },
+  dEsim: { fr: 'Internet & e-SIM', en: 'Internet & eSIM', es: 'Internet y eSIM' },
+  dEsimSub: { fr: 'Comparer les offres avant de partir', en: 'Compare plans before you fly', es: 'Compara planes antes de viajar' },
+  dMap: { fr: 'Carte', en: 'Map', es: 'Mapa' },
+  dMapSub: { fr: 'Plages, aéroports, et ce qu’il y a autour de toi', en: 'Beaches, airports and what’s around you', es: 'Playas, aeropuertos y lo que hay cerca' },
+  dCountry: { fr: 'Le pays', en: 'The country', es: 'El país' },
+  dCountrySub: { fr: 'Cacao, café, cigares, or, larimar…', en: 'Cocoa, coffee, cigars, gold, larimar…', es: 'Cacao, café, cigarros, oro, larimar…' },
+
+  // Convertisseur
+  converter: { fr: 'Convertisseur', en: 'Converter', es: 'Convertidor' },
+  ratesLoading: { fr: 'Chargement des taux…', en: 'Loading rates…', es: 'Cargando tasas…' },
+  ratesFallback: { fr: 'Taux de secours du 12/11/2026', en: 'Backup rates from 11/12/2026', es: 'Tasas de respaldo del 12/11/2026' },
+  ratesOf: { fr: 'Taux du {d}', en: 'Rates of {d}', es: 'Tasas del {d}' },
+  offlinePrefix: { fr: 'Hors ligne · ', en: 'Offline · ', es: 'Sin conexión · ' },
+  updateRates: { fr: 'Mettre à jour les taux', en: 'Update rates', es: 'Actualizar tasas' },
+  curDOP: { fr: 'Pesos', en: 'Pesos', es: 'Pesos' },
+  curUSD: { fr: 'Dollars', en: 'Dollars', es: 'Dólares' },
+  curEUR: { fr: 'Euros', en: 'Euros', es: 'Euros' },
+  amountIn: { fr: 'Montant en {c}', en: 'Amount in {c}', es: 'Monto en {c}' },
+
+  // Taxis
+  taxisSub: { fr: 'Repères relevés en {d}', en: 'Benchmarks checked {d}', es: 'Referencias de {d}' },
+  taxisNotice: {
+    fr: 'Ces montants sont ceux d’un transfert ou d’un taxi par véhicule. Sur place, ça se négocie : vise ce prix ou moins, et fixe-le avant de monter.',
+    en: 'These are per-vehicle transfer or taxi prices. On the spot, prices are negotiable: aim for this or less, and agree before you get in.',
+    es: 'Son precios de traslado o taxi por vehículo. En el lugar se negocia: apunta a este precio o menos y acuérdalo antes de subir.',
+  },
+  duration: { fr: 'Durée {d}', en: 'Duration {d}', es: 'Duración {d}' },
+  askDriver: { fr: 'Demander le prix au chauffeur', en: 'Ask the driver the price', es: 'Preguntar el precio al chofer' },
+
+  // Transports
+  transportsSub: { fr: 'Prix moyens relevés en {d}', en: 'Average prices, {d}', es: 'Precios promedio, {d}' },
+  transportsNotice: {
+    fr: 'Règle d’or : sauf Uber et bus, le prix se fixe toujours avant de partir.',
+    en: 'Golden rule: except for Uber and buses, always agree on the price before you go.',
+    es: 'Regla de oro: salvo Uber y autobús, el precio se acuerda siempre antes de salir.',
+  },
+
+  // Phrases
+  phrasesSub: { fr: 'Touche une phrase pour l’afficher en grand', en: 'Tap a phrase to show it full screen', es: 'Toca una frase para verla en grande' },
+  showDriver: { fr: 'Montrer au chauffeur', en: 'Show the driver', es: 'Mostrar al chofer' },
+  showDriverDesc: { fr: 'Écris ta destination, on prépare la phrase en espagnol.', en: 'Type your destination, we’ll write it in Spanish.', es: 'Escribe tu destino y preparamos la frase.' },
+  destPh: { fr: 'Ex. Playa Bávaro, hotel Riu…', en: 'E.g. Playa Bávaro, hotel Riu…', es: 'Ej. Playa Bávaro, hotel Riu…' },
+  destination: { fr: 'Destination', en: 'Destination', es: 'Destino' },
+  showBig: { fr: 'Afficher en grand', en: 'Show full screen', es: 'Ver en grande' },
+  takeMe: { fr: 'Emmenez-moi à {x}. Combien ça coûte ?', en: 'Take me to {x}. How much is it?', es: 'Lléveme a {x}. ¿Cuánto cuesta?' },
+  showScreen: { fr: 'Montre cet écran', en: 'Show this screen', es: 'Muestra esta pantalla' },
+  close: { fr: 'Fermer', en: 'Close', es: 'Cerrar' },
+
+  // Arnaques / infos / urgences
+  scamsSub: { fr: 'Les pièges les plus fréquents', en: 'The most common traps', es: 'Las trampas más comunes' },
+  infoSub: { fr: 'À savoir avant et après l’atterrissage', en: 'Know before and after you land', es: 'Antes y después de aterrizar' },
+  eticketBtn: { fr: 'Site officiel : eticket.migracion.gob.do', en: 'Official site: eticket.migracion.gob.do', es: 'Sitio oficial: eticket.migracion.gob.do' },
+  emergencySub: { fr: 'Touche un numéro pour appeler', en: 'Tap a number to call', es: 'Toca un número para llamar' },
+  callX: { fr: 'Appeler {x}', en: 'Call {x}', es: 'Llamar {x}' },
+  showPolice: { fr: 'Afficher « Appelez la police » en espagnol', en: 'Show “Call the police” in Spanish', es: 'Mostrar «Llame a la policía»' },
+  policeFr: { fr: 'À l’aide ! Appelez la police.', en: 'Help! Call the police.', es: '¡Ayuda! Llame a la policía.' },
+  emergencyNote: {
+    fr: 'Pense aussi à noter le numéro de ton ambassade et de ton hôtel avant de partir.',
+    en: 'Also note down your embassy’s and hotel’s numbers before you go.',
+    es: 'Anota también el número de tu embajada y de tu hotel.',
+  },
+
+  // Activités
+  activitiesSub: { fr: 'Tarifs moyens relevés en {d}', en: 'Average prices, {d}', es: 'Precios promedio, {d}' },
+  activitiesNotice: {
+    fr: 'Les prix varient selon l’agence et ce qui est inclus (transport, repas). Compare deux ou trois offres, et négocie sur place.',
+    en: 'Prices vary by agency and what’s included (transport, meals). Compare two or three offers and haggle on the spot.',
+    es: 'Los precios varían según la agencia y lo incluido (transporte, comida). Compara dos o tres ofertas y negocia.',
+  },
+  illustration: { fr: 'Photo d’illustration', en: 'Illustrative photo', es: 'Foto ilustrativa' },
+  photoOf: { fr: 'Photo : {x}', en: 'Photo: {x}', es: 'Foto: {x}' },
+
+  // Adresses
+  foodSub: { fr: 'Où manger, du local au français', en: 'Where to eat, from local to French', es: 'Dónde comer, de lo local a lo francés' },
+  kAll: { fr: 'Tout', en: 'All', es: 'Todo' },
+  kLocal: { fr: 'Local', en: 'Local', es: 'Local' },
+  kFrench: { fr: 'Français', en: 'French', es: 'Francés' },
+  kTop: { fr: 'Top noté', en: 'Top rated', es: 'Mejor valorado' },
+  kBudget: { fr: 'Petit budget', en: 'Budget', es: 'Económico' },
+  noPlace: { fr: 'Pas encore d’adresse de ce type ici.', en: 'No places of this type here yet.', es: 'Aún no hay lugares de este tipo aquí.' },
+  mapsPlace: { fr: 'Voir le resto et ses photos sur Google Maps', en: 'See the place and photos on Google Maps', es: 'Ver el lugar y sus fotos en Google Maps' },
+  typicalDish: { fr: 'Plat typique : {x}', en: 'Typical dish: {x}', es: 'Plato típico: {x}' },
+  foodNotice: {
+    fr: 'Les photos montrent un plat typique de la cuisine proposée, pas le resto lui-même. Pour voir le lieu, les horaires et les avis récents, ouvre Google Maps.',
+    en: 'Photos show a typical dish of the cuisine, not the restaurant itself. For the place, hours and recent reviews, open Google Maps.',
+    es: 'Las fotos muestran un plato típico de la cocina, no el restaurante. Para ver el lugar, horarios y reseñas, abre Google Maps.',
+  },
+
+  // Pays
+  countrySub: { fr: 'Ce que la Rép. Dom. produit et ce qui la rend unique', en: 'What the D.R. produces and what makes it unique', es: 'Lo que produce R. D. y lo que la hace única' },
+  didYouKnow: { fr: 'Le saviez-vous ?', en: 'Did you know?', es: '¿Sabías que…?' },
+
+  // Plages
+  beachesSub: { fr: 'Touche « Y aller » pour l’itinéraire dans Maps', en: 'Tap “Go” for directions in Maps', es: 'Toca «Ir» para la ruta en Maps' },
+  go: { fr: 'Y aller', en: 'Go', es: 'Ir' },
+  photosNote: {
+    fr: 'Les photos se chargent avec Internet, puis restent visibles hors ligne.',
+    en: 'Photos load online, then stay visible offline.',
+    es: 'Las fotos se cargan con Internet y luego se ven sin conexión.',
+  },
+
+  // Prix
+  pricesSub: { fr: 'Prix relevés en {d}', en: 'Prices checked {d}', es: 'Precios de {d}' },
+  pricesNotice: {
+    fr: 'Prix « locaux » : colmado, comedor, rue. En zone touristique ou à la plage, compte souvent 2 à 5 fois plus.',
+    en: '“Local” prices: colmado, comedor, street. In tourist areas or on the beach, expect 2 to 5 times more.',
+    es: 'Precios «locales»: colmado, comedor, calle. En zona turística o en la playa, suele ser de 2 a 5 veces más.',
+  },
+  localPrice: { fr: 'Prix local', en: 'Local price', es: 'Precio local' },
+  touristPrice: { fr: 'Zone touristique', en: 'Tourist area', es: 'Zona turística' },
+
+  // e-SIM
+  esimSub: { fr: 'Prix relevés en {d}', en: 'Prices checked {d}', es: 'Precios de {d}' },
+  esimIntro: {
+    fr: 'Une e-SIM s’installe avant le départ et marche dès l’atterrissage. Vérifie d’abord que ton téléphone est compatible e-SIM et désimlocké.',
+    en: 'An eSIM installs before you fly and works as soon as you land. First check your phone supports eSIM and is unlocked.',
+    es: 'Una eSIM se instala antes de viajar y funciona al aterrizar. Revisa que tu teléfono sea compatible y esté liberado.',
+  },
+  esimPlans: { fr: 'Offres e-SIM', en: 'eSIM plans', es: 'Planes eSIM' },
+  esimLocal: { fr: 'Carte SIM locale', en: 'Local SIM card', es: 'Tarjeta SIM local' },
+  esimTips: { fr: 'Bon à savoir', en: 'Good to know', es: 'Bueno saber' },
+  seeOffer: { fr: 'Voir l’offre', en: 'See plan', es: 'Ver plan' },
+  unlimited: { fr: 'Illimité', en: 'Unlimited', es: 'Ilimitado' },
+  days: { fr: '{n} jours', en: '{n} days', es: '{n} días' },
+
+  // Carte
+  mapSub: { fr: 'Plages, aéroports et sites', en: 'Beaches, airports and sights', es: 'Playas, aeropuertos y lugares' },
+  aroundMe: { fr: 'Autour de moi', en: 'Around me', es: 'Cerca de mí' },
+  aroundMeDesc: { fr: 'Ouvre Google Maps sur ce qu’il y a près de toi.', en: 'Opens Google Maps with what’s near you.', es: 'Abre Google Maps con lo que hay cerca.' },
+  atm: { fr: 'Distributeurs', en: 'ATMs', es: 'Cajeros' },
+  pharmacy: { fr: 'Pharmacies', en: 'Pharmacies', es: 'Farmacias' },
+  gas: { fr: 'Stations-service', en: 'Gas stations', es: 'Gasolineras' },
+  supermarket: { fr: 'Supermarchés', en: 'Supermarkets', es: 'Supermercados' },
+  hospital: { fr: 'Cliniques', en: 'Clinics', es: 'Clínicas' },
+  colmado: { fr: 'Colmados', en: 'Colmados', es: 'Colmados' },
+  mapNeedsNet: { fr: 'La carte a besoin d’Internet.', en: 'The map needs an Internet connection.', es: 'El mapa necesita Internet.' },
+  legendBeach: { fr: 'Plage', en: 'Beach', es: 'Playa' },
+  legendAirport: { fr: 'Aéroport', en: 'Airport', es: 'Aeropuerto' },
+  legendSight: { fr: 'À voir', en: 'Sight', es: 'Para ver' },
+
+  // Traducteur
+  trSub: { fr: 'Français, anglais, espagnol latino', en: 'English, French, Latin American Spanish', es: 'Español latino, inglés, francés' },
+  from: { fr: 'De', en: 'From', es: 'De' },
+  to: { fr: 'Vers', en: 'To', es: 'A' },
+  swap: { fr: 'Inverser', en: 'Swap', es: 'Invertir' },
+  swapLabel: { fr: 'Inverser les langues', en: 'Swap languages', es: 'Invertir idiomas' },
+  textToTranslate: { fr: 'Texte à traduire', en: 'Text to translate', es: 'Texto a traducir' },
+  translate: { fr: 'Traduire', en: 'Translate', es: 'Traducir' },
+  trError: {
+    fr: 'Pas de connexion ou service indisponible. Tu peux réessayer, ou ouvrir Google Traduction.',
+    en: 'No connection or service unavailable. Try again, or open Google Translate.',
+    es: 'Sin conexión o servicio no disponible. Intenta de nuevo o abre Google Traductor.',
+  },
+  openGT: { fr: 'Ouvrir Google Traduction', en: 'Open Google Translate', es: 'Abrir Google Traductor' },
+  listen: { fr: 'Écouter', en: 'Listen', es: 'Escuchar' },
+  copy: { fr: 'Copier', en: 'Copy', es: 'Copiar' },
+  copied: { fr: 'Copié', en: 'Copied', es: 'Copiado' },
+  big: { fr: 'En grand', en: 'Full screen', es: 'En grande' },
+  recent: { fr: 'Récentes (dispo hors ligne)', en: 'Recent (available offline)', es: 'Recientes (sin conexión)' },
+  trDisclaimer: {
+    fr: 'Traduction automatique : pour une info importante (santé, argent), fais confirmer par la personne en face.',
+    en: 'Machine translation: for anything important (health, money), confirm with the person you’re talking to.',
+    es: 'Traducción automática: para algo importante (salud, dinero), confírmalo con la otra persona.',
+  },
+  langFr: { fr: 'Français', en: 'French', es: 'Francés' },
+  langEn: { fr: 'Anglais', en: 'English', es: 'Inglés' },
+  langEs: { fr: 'Espagnol', en: 'Spanish', es: 'Español' },
+} as const;
+
+export type UiKey = keyof typeof ui0;
+export const ui: Record<UiKey, { fr: string; en: string; es: string }> = ui0;
