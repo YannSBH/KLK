@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Image as Photo } from 'expo-image';
 import { Href, router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -8,30 +9,33 @@ import { phraseGroups, practical, routes, scams, transports } from '../data/cont
 import { beaches } from '../data/beaches';
 import { activityGroups, cities, countryFacts } from '../data/discover';
 import { priceItems } from '../data/extras';
+import { dishes, imageSource, Photo as PhotoT, tilePhotos } from '../data/photos';
 import type { UiKey } from '../data/ui';
 import { Lang, LANG_NAMES, LANGS, T, useI18n } from '../i18n';
 import { colors, radius } from '../theme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
-const TILES: { title: UiKey; sub: UiKey; icon: IconName; href: Href; urgent?: boolean }[] = [
-  { title: 'tTaxis', sub: 'tTaxisSub', icon: 'car-outline', href: '/taxis' },
-  { title: 'tTransports', sub: 'tTransportsSub', icon: 'bus-outline', href: '/transports' },
-  { title: 'tPhrases', sub: 'tPhrasesSub', icon: 'chatbubble-ellipses-outline', href: '/phrases' },
-  { title: 'tScams', sub: 'tScamsSub', icon: 'warning-outline', href: '/arnaques' },
-  { title: 'tInfo', sub: 'tInfoSub', icon: 'information-circle-outline', href: '/infos' },
-  { title: 'tTranslator', sub: 'tTranslatorSub', icon: 'language-outline', href: '/traducteur' },
-  { title: 'tEmergency', sub: 'tEmergencySub', icon: 'call-outline', href: '/urgences', urgent: true },
+const beach = (id: string) => beaches.find((b) => b.id === id)!.photo;
+
+const TILES: { title: UiKey; sub: UiKey; icon: IconName; href: Href; urgent?: boolean; photo?: PhotoT; tint: string }[] = [
+  { title: 'tTaxis', sub: 'tTaxisSub', icon: 'car-outline', href: '/taxis', photo: tilePhotos.taxis, tint: '#0E9AA7' },
+  { title: 'tTransports', sub: 'tTransportsSub', icon: 'bus-outline', href: '/transports', photo: tilePhotos.transports, tint: '#F29F05' },
+  { title: 'tPhrases', sub: 'tPhrasesSub', icon: 'chatbubble-ellipses-outline', href: '/phrases', photo: tilePhotos.phrases, tint: '#E4572E' },
+  { title: 'tScams', sub: 'tScamsSub', icon: 'warning-outline', href: '/arnaques', photo: tilePhotos.scams, tint: '#7B4FA0' },
+  { title: 'tInfo', sub: 'tInfoSub', icon: 'information-circle-outline', href: '/infos', photo: tilePhotos.info, tint: '#2A9D8F' },
+  { title: 'tTranslator', sub: 'tTranslatorSub', icon: 'language-outline', href: '/traducteur', photo: tilePhotos.translator, tint: '#3A86FF' },
+  { title: 'tEmergency', sub: 'tEmergencySub', icon: 'call-outline', href: '/urgences', urgent: true, tint: '#C8102E' },
 ];
 
-const DISCOVER: { title: UiKey; sub: UiKey; icon: IconName; href: Href; color: string }[] = [
-  { title: 'dActivities', sub: 'dActivitiesSub', icon: 'boat-outline', href: '/activites', color: '#E7EEF9' },
-  { title: 'dBeaches', sub: 'dBeachesSub', icon: 'sunny-outline', href: '/plages', color: '#E3F4F4' },
-  { title: 'dPrices', sub: 'dPricesSub', icon: 'pricetags-outline', href: '/prix', color: '#EAF6EC' },
-  { title: 'dFood', sub: 'dFoodSub', icon: 'restaurant-outline', href: '/adresses', color: '#FBE9EC' },
-  { title: 'dEsim', sub: 'dEsimSub', icon: 'cellular-outline', href: '/esim', color: '#EFEAFB' },
-  { title: 'dMap', sub: 'dMapSub', icon: 'map-outline', href: '/carte', color: '#E3F4F4' },
-  { title: 'dCountry', sub: 'dCountrySub', icon: 'earth-outline', href: '/pays', color: '#FFF4E0' },
+const DISCOVER: { title: UiKey; sub: UiKey; icon: IconName; href: Href; color: string; photo: PhotoT }[] = [
+  { title: 'dActivities', sub: 'dActivitiesSub', icon: 'boat-outline', href: '/activites', color: '#E7EEF9', photo: tilePhotos.activities },
+  { title: 'dBeaches', sub: 'dBeachesSub', icon: 'sunny-outline', href: '/plages', color: '#E3F4F4', photo: beach('rincon') },
+  { title: 'dPrices', sub: 'dPricesSub', icon: 'pricetags-outline', href: '/prix', color: '#EAF6EC', photo: priceItems[0].photo! },
+  { title: 'dFood', sub: 'dFoodSub', icon: 'restaurant-outline', href: '/adresses', color: '#FBE9EC', photo: dishes.bandera.photo },
+  { title: 'dEsim', sub: 'dEsimSub', icon: 'cellular-outline', href: '/esim', color: '#EFEAFB', photo: tilePhotos.esim },
+  { title: 'dMap', sub: 'dMapSub', icon: 'map-outline', href: '/carte', color: '#E3F4F4', photo: beach('aguilas') },
+  { title: 'dCountry', sub: 'dCountrySub', icon: 'earth-outline', href: '/pays', color: '#FFF4E0', photo: tilePhotos.country },
 ];
 
 type Result = { title: string; sub: string; href: Href; text: string };
@@ -86,6 +90,8 @@ export default function Home() {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colors.bg }} contentContainerStyle={{ paddingBottom: insets.bottom + 32 }} keyboardShouldPersistTaps="handled">
       <View style={[s.hero, { paddingTop: insets.top + 16 }]}>
+        <Photo source={imageSource(tilePhotos.hero)} style={StyleSheet.absoluteFill} contentFit="cover" cachePolicy="disk" transition={300} accessibilityIgnoresInvertColors />
+        <View style={s.heroShade} />
         <View style={s.inner}>
           <View style={s.top}>
             <View style={s.brand}>
@@ -147,6 +153,7 @@ export default function Home() {
           ) : null}
 
           <Converter />
+          <Text style={s.heroCredit}>© {tilePhotos.hero.credit} · {tilePhotos.hero.license}</Text>
         </View>
       </View>
       <View style={s.stripe}>
@@ -163,11 +170,16 @@ export default function Home() {
               key={x.title}
               onPress={() => router.push(x.href)}
               accessibilityRole="button"
-              style={({ pressed }) => [s.tile, x.urgent && s.tileUrgent, pressed && { opacity: 0.8 }]}>
-              <Ionicons name={x.icon} size={26} color={x.urgent ? '#fff' : colors.navy} />
-              <View>
-                <Text style={[s.tileTitle, x.urgent && { color: '#fff' }]}>{t(x.title)}</Text>
-                <Text style={[s.tileSub, x.urgent && { color: '#fff' }]}>{t(x.sub)}</Text>
+              style={({ pressed }) => [s.tile, { backgroundColor: x.tint }, x.urgent && s.tileUrgent, pressed && { opacity: 0.85 }]}>
+              {x.urgent ? null : <Ionicons name={x.icon} size={34} color="rgba(255,255,255,0.55)" style={s.tileIcon} />}
+              {x.photo ? (
+                <Photo source={imageSource(x.photo)} style={StyleSheet.absoluteFill} contentFit="cover" cachePolicy="disk" transition={200} />
+              ) : null}
+              {x.photo ? <View style={s.tileShade} /> : null}
+              <View style={s.tileText}>
+                {x.urgent ? <Ionicons name={x.icon} size={22} color="#fff" /> : null}
+                <Text style={s.tileTitleOn}>{t(x.title)}</Text>
+                <Text style={s.tileSubOn} numberOfLines={1}>{t(x.sub)}</Text>
               </View>
             </Pressable>
           ))}
@@ -183,6 +195,7 @@ export default function Home() {
               style={({ pressed }) => [s.discover, pressed && { opacity: 0.85 }]}>
               <View style={[s.discoverIcon, { backgroundColor: d.color }]}>
                 <Ionicons name={d.icon} size={26} color={colors.navy} />
+                <Photo source={imageSource(d.photo)} style={StyleSheet.absoluteFill} contentFit="cover" cachePolicy="disk" transition={200} />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={s.tileTitle}>{t(d.title)}</Text>
@@ -198,15 +211,17 @@ export default function Home() {
 }
 
 const s = StyleSheet.create({
-  hero: { backgroundColor: '#082447', paddingBottom: 20, borderBottomLeftRadius: 28, borderBottomRightRadius: 28 },
+  hero: { backgroundColor: '#0E9AA7', paddingBottom: 12, borderBottomLeftRadius: 28, borderBottomRightRadius: 28, overflow: 'hidden' },
+  heroShade: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(4,38,78,0.42)' },
+  heroCredit: { alignSelf: 'flex-end', color: 'rgba(255,255,255,0.8)', fontSize: 10, marginTop: -8 },
   inner: { paddingHorizontal: 20, gap: 16, maxWidth: 560, width: '100%', alignSelf: 'center' },
   body: { paddingTop: 20 },
   top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 12, flexShrink: 1 },
   logoImg: { width: 48, height: 48, borderRadius: 14 },
-  logo: { fontSize: 30, fontWeight: '900', color: '#fff', letterSpacing: -0.5, lineHeight: 34 },
-  tagline: { fontSize: 13, color: colors.mutedOnNavy },
-  langs: { flexDirection: 'row', backgroundColor: 'rgba(255,255,255,0.12)', borderRadius: 999, padding: 3, gap: 2 },
+  logo: { fontSize: 30, fontWeight: '900', color: '#fff', letterSpacing: -0.5, lineHeight: 34, textShadowColor: 'rgba(0,0,0,0.45)', textShadowRadius: 6 },
+  tagline: { fontSize: 13, color: '#fff', fontWeight: '600', textShadowColor: 'rgba(0,0,0,0.5)', textShadowRadius: 4 },
+  langs: { flexDirection: 'row', backgroundColor: 'rgba(4,38,78,0.55)', borderRadius: 999, padding: 3, gap: 2 },
   lang: { minWidth: 36, minHeight: 32, borderRadius: 999, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
   langOn: { backgroundColor: '#fff' },
   langText: { color: '#fff', fontWeight: '800', fontSize: 12 },
@@ -224,10 +239,15 @@ const s = StyleSheet.create({
   stripePart: { flex: 1 },
   section: { fontSize: 15, fontWeight: '700', color: colors.navy, marginTop: 4 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
-  tile: { width: '47.5%', flexGrow: 1, height: 96, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.card, padding: 14, justifyContent: 'space-between' },
-  tileUrgent: { backgroundColor: colors.red, borderColor: colors.red },
+  tile: { width: '47.5%', flexGrow: 1, height: 124, borderRadius: radius.lg, overflow: 'hidden', justifyContent: 'flex-end' },
+  tileIcon: { position: 'absolute', top: 14, right: 14 },
+  tileShade: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.3)' },
+  tileText: { padding: 12, gap: 1 },
+  tileTitleOn: { fontSize: 17, fontWeight: '800', color: '#fff', textShadowColor: 'rgba(0,0,0,0.6)', textShadowRadius: 4 },
+  tileSubOn: { fontSize: 12, color: '#fff', fontWeight: '600', textShadowColor: 'rgba(0,0,0,0.6)', textShadowRadius: 4 },
+  tileUrgent: { width: '100%', height: 84 },
   tileTitle: { fontSize: 16, fontWeight: '700', color: colors.navy },
   tileSub: { fontSize: 12, color: colors.muted, marginTop: 2 },
-  discover: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 14, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.card, minHeight: 76 },
-  discoverIcon: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  discover: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 10, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.card, minHeight: 76 },
+  discoverIcon: { width: 64, height: 64, borderRadius: 16, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
 });

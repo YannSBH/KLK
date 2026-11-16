@@ -94,3 +94,27 @@ export const dishes: Record<string, Dish> = {
     ),
   },
 };
+
+// Vignettes de l'accueil (500 px, plus légères).
+const small = (path: string, file: string, credit: string, license: string): Photo => {
+  const name = path.split('/').pop()!;
+  return { uri: `${TH}/${path}/500px-${name}`, credit, license, page: C + file };
+};
+
+export const tilePhotos = {
+  hero: activityPhotos.saona,
+  taxis: small('5/5a/Punta_cana_airport.jpg', 'Punta_cana_airport.jpg', 'C. Klein', 'CC BY-SA 3.0'),
+  transports: small('b/ba/Guagua_%2814504089627%29.jpg', 'Guagua_(14504089627).jpg', 'Daniel Lobo', 'CC BY 2.0'),
+  phrases: small('c/cc/Colmado_Henry_%2814710447213%29.jpg', 'Colmado_Henry_(14710447213).jpg', 'Daniel Lobo', 'CC BY 2.0'),
+  scams: small('5/58/DOM-9-Republica_Dominica-1_peso_%281849%29.jpg', 'DOM-9-Republica_Dominica-1_peso_(1849).jpg', 'National Museum of American History', 'Domaine public'),
+  info: activityPhotos.zona,
+  translator: small('9/92/Colmado_La_Colina%2C_September_2009_-_panoramio.jpg', 'Colmado_La_Colina,_September_2009_-_panoramio.jpg', 'Glenn M. Harden', 'CC BY-SA 3.0'),
+  esim: small(
+    '6/66/DSC_8208_A_person_crouches_on_a_sandy_shoreline_holding_up_a_smartphone_to_capture_the_sunset_reflecting_over_the_water_near_a_wooden_pier.jpg',
+    'DSC_8208_A_person_crouches_on_a_sandy_shoreline_holding_up_a_smartphone_to_capture_the_sunset_reflecting_over_the_water_near_a_wooden_pier.jpg',
+    'PattayaPatrol',
+    'CC BY-SA 4.0',
+  ),
+  activities: activityPhotos.catamaran,
+  country: activityPhotos.tresojos,
+};
