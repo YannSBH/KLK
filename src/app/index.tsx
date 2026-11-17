@@ -9,6 +9,7 @@ import { phraseGroups, practical, routes, scams, transports } from '../data/cont
 import { beaches } from '../data/beaches';
 import { activityGroups, cities, countryFacts } from '../data/discover';
 import { priceItems } from '../data/extras';
+import { hotels, zoneNames } from '../data/hotels';
 import { dishes, imageSource, Photo as PhotoT, tilePhotos } from '../data/photos';
 import type { UiKey } from '../data/ui';
 import { Lang, LANG_NAMES, LANGS, T, useI18n } from '../i18n';
@@ -31,6 +32,7 @@ const TILES: { title: UiKey; sub: UiKey; icon: IconName; href: Href; urgent?: bo
 const DISCOVER: { title: UiKey; sub: UiKey; icon: IconName; href: Href; color: string; photo: PhotoT }[] = [
   { title: 'dActivities', sub: 'dActivitiesSub', icon: 'boat-outline', href: '/activites', color: '#E7EEF9', photo: tilePhotos.activities },
   { title: 'dBeaches', sub: 'dBeachesSub', icon: 'sunny-outline', href: '/plages', color: '#E3F4F4', photo: beach('rincon') },
+  { title: 'dHotels', sub: 'dHotelsSub', icon: 'bed-outline', href: '/hotels', color: '#FFF4E0', photo: hotels.find((h) => h.id === 'hardrock')!.photo! },
   { title: 'dPrices', sub: 'dPricesSub', icon: 'pricetags-outline', href: '/prix', color: '#EAF6EC', photo: priceItems[0].photo! },
   { title: 'dFood', sub: 'dFoodSub', icon: 'restaurant-outline', href: '/adresses', color: '#FBE9EC', photo: dishes.bandera.photo },
   { title: 'dEsim', sub: 'dEsimSub', icon: 'cellular-outline', href: '/esim', color: '#EFEAFB', photo: tilePhotos.esim },
@@ -68,6 +70,7 @@ function buildIndex(lang: Lang, t: (k: UiKey) => string): Result[] {
       c.places.map((p) => ({ title: p.name, sub: `${c.name} · ${L(p.cuisine)}`, href: '/adresses' as Href, text: norm(`${p.name} ${c.name} ${all(p.cuisine)} ${p.kind} restaurant resto restaurante manger eat comer`) })),
     ),
     ...beaches.map((b) => ({ title: b.name, sub: `${t('dBeaches')} · ${L(b.region)}`, href: '/plages' as Href, text: norm(`${b.name} ${all(b.region)} ${b.tags.map(all).join(' ')} plage playa beach`) })),
+    ...hotels.map((h) => ({ title: h.name, sub: `${L(zoneNames[h.zone])} · ${h.from} $`, href: '/hotels' as Href, text: norm(`${h.name} ${all(zoneNames[h.zone])} hotel hôtel resort all inclusive tout compris todo incluido`) })),
     ...priceItems.map((x) => ({ title: L(x.name), sub: L(x.local), href: '/prix' as Href, text: norm(`${all(x.name)} prix price precio combien cuanto cuesta`) })),
     { title: t('dEsim'), sub: t('dEsimSub'), href: '/esim', text: norm('esim e-sim sim internet data donnees datos claro altice airalo holafly nomad saily wifi telephone phone') },
     { title: t('dMap'), sub: t('dMapSub'), href: '/carte', text: norm('carte map mapa aeroport airport aeropuerto distributeur atm cajero pharmacie pharmacy farmacia essence gas gasolinera') },
