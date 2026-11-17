@@ -42,6 +42,15 @@ const DISCOVER: { title: UiKey; sub: UiKey; icon: IconName; href: Href; color: s
   { title: 'dCountry', sub: 'dCountrySub', icon: 'earth-outline', href: '/pays', color: '#FFF4E0', photo: tilePhotos.country },
 ];
 
+const GUIDES: { title: UiKey; sub: UiKey; icon: IconName; href: Href; color: string }[] = [
+  { title: 'gHealth', sub: 'gHealthSub', icon: 'medkit', href: '/sante', color: '#D64545' },
+  { title: 'gMoney', sub: 'gMoneySub', icon: 'cash', href: '/argent', color: '#1E8A4C' },
+  { title: 'gTips', sub: 'gTipsSub', icon: 'heart', href: '/pourboires', color: '#E08A00' },
+  { title: 'gCalendar', sub: 'gCalendarSub', icon: 'calendar', href: '/calendrier', color: '#7B4FA0' },
+  { title: 'gDrive', sub: 'gDriveSub', icon: 'car-sport', href: '/voiture', color: '#1F6FB2' },
+  { title: 'gChecklist', sub: 'gChecklistSub', icon: 'checkmark-done', href: '/checklist', color: '#0E9AA7' },
+];
+
 type Result = { title: string; sub: string; href: Href; text: string };
 
 const norm = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -74,6 +83,14 @@ function buildIndex(lang: Lang, t: (k: UiKey) => string): Result[] {
     ...beaches.map((b) => ({ title: b.name, sub: `${t('dBeaches')} · ${L(b.region)}`, href: '/plages' as Href, text: norm(`${b.name} ${all(b.region)} ${b.tags.map(all).join(' ')} plage playa beach`) })),
     ...hotels.map((h) => ({ title: h.name, sub: `${L(zoneNames[h.zone])} · ${h.from} $`, href: '/hotels' as Href, text: norm(`${h.name} ${all(zoneNames[h.zone])} hotel hôtel resort all inclusive tout compris todo incluido`) })),
     ...shopZones.flatMap((z) => z.shops.map((x) => ({ title: x.name, sub: `${z.name} · ${t('dShops')}`, href: '/courses' as Href, text: norm(`${x.name} ${z.name} supermarche supermarket supermercado courses groceries compras mall centre commercial centro comercial`) }))),
+    ...([
+      ['gHealth', '/sante', 'sante health salud hopital hospital clinique clinica medecin doctor medico pharmacie farmacia dengue'],
+      ['gMoney', '/argent', 'argent money dinero distributeur atm cajero banque bank banco change cambio carte card tarjeta dollar peso'],
+      ['gTips', '/pourboires', 'pourboire tip tipping propina'],
+      ['gCalendar', '/calendrier', 'ferie holiday feriado fete carnaval carnival ouragan hurricane huracan saison season temporada semana santa'],
+      ['gDrive', '/voiture', 'voiture car carro location rental conduire drive manejar permis license licencia police peage toll scooter moto pasola'],
+      ['gChecklist', '/checklist', 'checklist liste list depart passeport passport pasaporte valise'],
+    ] as [UiKey, Href, string][]).map(([k, href, words]) => ({ title: t(k), sub: t('guides'), href, text: norm(words) })),
     ...priceItems.map((x) => ({ title: L(x.name), sub: L(x.local), href: '/prix' as Href, text: norm(`${all(x.name)} prix price precio combien cuanto cuesta`) })),
     { title: t('dEsim'), sub: t('dEsimSub'), href: '/esim', text: norm('esim e-sim sim internet data donnees datos claro altice airalo holafly nomad saily wifi telephone phone') },
     { title: t('dMap'), sub: t('dMapSub'), href: '/carte', text: norm('carte map mapa aeroport airport aeropuerto distributeur atm cajero pharmacie pharmacy farmacia essence gas gasolinera') },
@@ -191,6 +208,23 @@ export default function Home() {
           ))}
         </View>
 
+        <Text style={s.section}>{t('guides')}</Text>
+        <View style={s.grid}>
+          {GUIDES.map((g) => (
+            <Pressable
+              key={g.title}
+              onPress={() => router.push(g.href)}
+              accessibilityRole="button"
+              style={({ pressed }) => [s.guide, { backgroundColor: g.color }, pressed && { opacity: 0.85 }]}>
+              <Ionicons name={g.icon} size={26} color="#fff" />
+              <View>
+                <Text style={s.tileTitleOn}>{t(g.title)}</Text>
+                <Text style={s.tileSubOn} numberOfLines={2}>{t(g.sub)}</Text>
+              </View>
+            </Pressable>
+          ))}
+        </View>
+
         <Text style={s.section}>{t('discover')}</Text>
         <View style={{ gap: 12 }}>
           {DISCOVER.map((d) => (
@@ -251,6 +285,7 @@ const s = StyleSheet.create({
   tileText: { padding: 12, gap: 1 },
   tileTitleOn: { fontSize: 17, fontWeight: '800', color: '#fff', textShadowColor: 'rgba(0,0,0,0.6)', textShadowRadius: 4 },
   tileSubOn: { fontSize: 12, color: '#fff', fontWeight: '600', textShadowColor: 'rgba(0,0,0,0.6)', textShadowRadius: 4 },
+  guide: { width: '47.5%', flexGrow: 1, minHeight: 112, borderRadius: radius.lg, padding: 14, justifyContent: 'space-between', gap: 8 },
   tileUrgent: { width: '100%', height: 84 },
   tileTitle: { fontSize: 16, fontWeight: '700', color: colors.navy },
   tileSub: { fontSize: 12, color: colors.muted, marginTop: 2 },
