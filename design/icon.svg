@@ -1,12 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024"><rect width="1024" height="1024" fill="#FFFFFF"/><rect x="0" y="0" width="432" height="432" fill="#002D62"/><rect x="592" y="0" width="432" height="432" fill="#CE1126"/><rect x="0" y="592" width="432" height="432" fill="#CE1126"/><rect x="592" y="592" width="432" height="432" fill="#002D62"/><circle cx="512" cy="512" r="300" fill="#FFFFFF"/><g transform="translate(512 512) scale(0.78) translate(-512 -512)"><g transform="rotate(45 512 512) translate(0 -40)">
-  <g stroke="#FFB000" stroke-width="22" stroke-linecap="round"><line x1="512" y1="830" x2="512" y2="900"/><line x1="262" y1="640" x2="262" y2="700"/><line x1="762" y1="640" x2="762" y2="700"/></g>
-  <g fill="#0B2E5C">
-    <path d="M512 236C537 236 550 272 550 304L550 700C550 742 532 784 512 796C492 784 474 742 474 700L474 304C474 272 487 236 512 236Z"/>
-    <path d="M550 420L800 556L800 612L550 548Z"/>
-    <path d="M474 420L224 556L224 612L474 548Z"/>
-    <path d="M548 690L650 748L650 784L540 766Z"/>
-    <path d="M476 690L374 748L374 784L484 766Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024"><rect width="1024" height="1024" fill="#FFFFFF"/><rect x="0" y="0" width="432" height="432" fill="#002D62"/><rect x="592" y="0" width="432" height="432" fill="#CE1126"/><rect x="0" y="592" width="432" height="432" fill="#CE1126"/><rect x="592" y="592" width="432" height="432" fill="#002D62"/><circle cx="512" cy="512" r="300" fill="#FFFFFF"/><g transform="translate(512 512) scale(0.93) translate(-512 -512)"><defs>
+  <radialGradient id="sky" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#D9F1FF"/><stop offset="0.6" stop-color="#8FD0F5"/><stop offset="1" stop-color="#4FA8DE"/></radialGradient>
+  <linearGradient id="body" x1="0" x2="1"><stop offset="0" stop-color="#B9C3CF"/><stop offset="0.35" stop-color="#FFFFFF"/><stop offset="0.6" stop-color="#F4F6F9"/><stop offset="1" stop-color="#9AA6B4"/></linearGradient>
+  <linearGradient id="wingR" x1="0" y1="0" x2="1" y2="0.4"><stop offset="0" stop-color="#F2F5F8"/><stop offset="1" stop-color="#A9B4C1"/></linearGradient>
+  <linearGradient id="wingL" x1="1" y1="0" x2="0" y2="0.4"><stop offset="0" stop-color="#E4E9EF"/><stop offset="1" stop-color="#9AA5B3"/></linearGradient>
+  <linearGradient id="eng" x1="0" x2="1"><stop offset="0" stop-color="#7D8896"/><stop offset="0.5" stop-color="#DDE3EA"/><stop offset="1" stop-color="#6E7988"/></linearGradient>
+  <linearGradient id="trail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+  <filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="14"/><feOffset dx="26" dy="30"/><feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <clipPath id="disc"><circle cx="512" cy="512" r="300"/></clipPath>
+</defs>
+<circle cx="512" cy="512" r="300" fill="url(#sky)"/>
+<g clip-path="url(#disc)">
+  <g transform="rotate(45 512 512)">
+    <rect x="356" y="600" width="14" height="420" rx="7" fill="url(#trail)"/>
+    <rect x="654" y="600" width="14" height="420" rx="7" fill="url(#trail)"/>
   </g>
-  <path d="M496 300C500 284 506 276 512 276" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" opacity="0.7"/>
+</g>
+<g transform="rotate(45 512 512) translate(0 -30)" filter="url(#sh)" stroke="#5C6B7D" stroke-width="3" stroke-linejoin="round">
+  <!-- ailes -->
+  <path d="M540 432L842 604Q850 612 842 620L540 566Z" fill="url(#wingR)"/>
+  <path d="M484 432L182 604Q174 612 182 620L484 566Z" fill="url(#wingL)"/>
+  <!-- moteurs -->
+  <rect x="644" y="470" width="34" height="88" rx="15" fill="url(#eng)"/>
+  <rect x="346" y="470" width="34" height="88" rx="15" fill="url(#eng)"/>
+  <rect x="649" y="468" width="24" height="10" rx="5" fill="#2B3440" stroke="none"/>
+  <rect x="351" y="468" width="24" height="10" rx="5" fill="#2B3440" stroke="none"/>
+  <!-- empennage horizontal -->
+  <path d="M536 724L646 784Q652 790 646 796L534 784Z" fill="url(#wingR)"/>
+  <path d="M488 724L378 784Q372 790 378 796L490 784Z" fill="url(#wingL)"/>
+  <!-- fuselage -->
+  <path d="M512 214C538 214 542 262 542 300L542 700C542 750 528 800 512 818C496 800 482 750 482 700L482 300C482 262 486 214 512 214Z" fill="url(#body)"/>
+  <!-- dérive aux couleurs du drapeau -->
+  <path d="M506 690L518 690L522 810L502 810Z" fill="#CE1126" stroke="none"/>
+  <path d="M507 700L517 700L519 760L505 760Z" fill="#002D62" stroke="none"/>
+  <!-- cockpit -->
+  <path d="M497 262Q512 246 527 262L524 276Q512 268 500 276Z" fill="#1D2B3C" stroke="none"/>
 </g>
 </g></svg>
