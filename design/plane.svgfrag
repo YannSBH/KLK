@@ -1,0 +1,11 @@
+<g transform="rotate(45 512 512) translate(0 -40)">
+  <g stroke="#FFB000" stroke-width="22" stroke-linecap="round"><line x1="512" y1="830" x2="512" y2="900"/><line x1="262" y1="640" x2="262" y2="700"/><line x1="762" y1="640" x2="762" y2="700"/></g>
+  <g fill="#0B2E5C">
+    <path d="M512 236C537 236 550 272 550 304L550 700C550 742 532 784 512 796C492 784 474 742 474 700L474 304C474 272 487 236 512 236Z"/>
+    <path d="M550 420L800 556L800 612L550 548Z"/>
+    <path d="M474 420L224 556L224 612L474 548Z"/>
+    <path d="M548 690L650 748L650 784L540 766Z"/>
+    <path d="M476 690L374 748L374 784L484 766Z"/>
+  </g>
+  <path d="M496 300C500 284 506 276 512 276" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" opacity="0.7"/>
+</g>
