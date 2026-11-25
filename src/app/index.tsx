@@ -120,7 +120,7 @@ export default function Home() {
             <View style={s.brand}>
               <Image source={require('../../assets/icon.png')} style={s.logoImg} accessibilityIgnoresInvertColors />
               <View style={{ flexShrink: 1 }}>
-                <Text style={s.logo}>KLK</Text>
+                <Text style={s.logo}>Rep. Dom. Guide</Text>
                 <Text style={s.tagline}>{t('tagline')}</Text>
               </View>
             </View>
@@ -259,7 +259,7 @@ const s = StyleSheet.create({
   top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 12, flexShrink: 1 },
   logoImg: { width: 48, height: 48, borderRadius: 14 },
-  logo: { fontSize: 30, fontWeight: '900', color: '#fff', letterSpacing: -0.5, lineHeight: 34, textShadowColor: 'rgba(0,0,0,0.45)', textShadowRadius: 6 },
+  logo: { fontSize: 22, fontWeight: '900', color: '#fff', letterSpacing: -0.5, lineHeight: 26, textShadowColor: 'rgba(0,0,0,0.45)', textShadowRadius: 6 },
   tagline: { fontSize: 13, color: '#fff', fontWeight: '600', textShadowColor: 'rgba(0,0,0,0.5)', textShadowRadius: 4 },
   langs: { flexDirection: 'row', backgroundColor: 'rgba(4,38,78,0.55)', borderRadius: 999, padding: 3, gap: 2 },
   lang: { minWidth: 36, minHeight: 32, borderRadius: 999, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },

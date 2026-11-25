@@ -425,7 +425,7 @@ export const checklist: CheckItem[] = [
   },
   {
     id: 'offline',
-    title: { fr: 'KLK ouvert une fois avec Internet', en: 'KLK opened once online', es: 'KLK abierta una vez con internet' },
+    title: { fr: 'App ouverte une fois avec Internet', en: 'App opened once online', es: 'App abierta una vez con internet' },
     text: { fr: 'Pour charger les photos et les taux de change avant le vol.', en: 'To load photos and exchange rates before the flight.', es: 'Para cargar fotos y tasas de cambio antes del vuelo.' },
   },
 ];

@@ -15,6 +15,6 @@ if (code.length === before) throw new Error('chemin de police introuvable dans l
 code = code.replace(/<\/script/gi, '<\\/script');
 html = html.replace(/<script src="[^"]+" defer><\/script>/, () => `<script>${code}</script>`);
 html = html.replace('<html lang="en">', '<html lang="fr">').replace(/<link rel="icon"[^>]*\/>/, '');
-html = html.replace('<title>KLK</title>', '<title>KLK – Rép. Dom.</title>\n<meta name="theme-color" content="#F7F8FA" />');
+html = html.replace('<title>KLK</title>', '<title>Rep. Dom. Guide</title>\n<meta name="theme-color" content="#F7F8FA" />');
 fs.writeFileSync(path.join(dist, 'klk.html'), html);
 console.log('ok', (html.length / 1024 / 1024).toFixed(2), 'Mo');
